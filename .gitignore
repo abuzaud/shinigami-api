@@ -1,0 +1,15 @@
+
+###> symfony/framework-bundle ###
+/htdocs/.env
+/htdocs/public/bundles/
+/htdocs/var/
+/htdocs/vendor/
+/vendor/
+###< symfony/framework-bundle ###
+
+### PHP Storm ###
+/htdocs/.idea/
+/.idea/
+
+### Docker MySQL ###
+mysql/

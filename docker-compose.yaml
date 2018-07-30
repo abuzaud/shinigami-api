@@ -17,6 +17,8 @@ services:
         volumes:
             - ./htdocs:/usr/local/apache2/htdocs
     # Lance un serveur MySQL
+        links:
+            - db:db
     db:
         image: mysql:5.7
         environment:
@@ -28,3 +30,10 @@ services:
         # Permet de conserver les bases de données dans le dossier mysql de la racine
         volumes:
             - ./mysql:/var/lib/mysql
+    # phpmyadmin
+    pma:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 8081:80
+        links:
+            - db:db
