@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    # Lance un serveur web apache
+    web:
+        build: docker/apache2
+        ports:
+            - 8080:80
+        volumes:
+            - ./htdocs:/usr/local/apache2/htdocs
+
+    # Lance un serveur PHP FPM qui sera lié à appache
+    php:
+        #image: php:7.2-fpm
+        build: docker/php
+        # Récupère les volumes définis sur web
+        volumes:
+            - ./htdocs:/usr/local/apache2/htdocs
+    # Lance un serveur MySQL
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        # Mapping de port pour se connecter à la db depuis l'extérieur du container
+        ports:
+            - 3306:3306
+
+        # Permet de conserver les bases de données dans le dossier mysql de la racine
+        volumes:
+            - ./mysql:/var/lib/mysql
