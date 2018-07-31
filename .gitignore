@@ -10,6 +10,3 @@
 ### PHP Storm ###
 /htdocs/.idea/
 /.idea/
-
-### Docker MySQL ###
-mysql/
