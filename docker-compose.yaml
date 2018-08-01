@@ -6,17 +6,27 @@ services:
         build: docker/apache2
         ports:
             - 8080:80
+            - 444:443
+        expose:
+            - 80
+            - 443
         volumes:
             - ./htdocs:/usr/local/apache2/htdocs
+        depends_on:
+            - db
+        environment:
+          APPLICATION_ENV: development
+          DEVELOPMENT_MODE: "false"
+          WEB_HTTP: "true"
 
     # Lance un serveur PHP FPM qui sera lié à appache
     php:
-        #image: php:7.2-fpm
         build: docker/php
         # Récupère les volumes définis sur web
         volumes:
             - ./htdocs:/usr/local/apache2/htdocs
-    # Lance un serveur MySQL
+        # Lance un serveur MySQL
+        tty: true
         links:
             - db:db
     db:
@@ -27,13 +37,20 @@ services:
         ports:
             - 3306:3306
 
-        # Permet de conserver les bases de données dans le dossier mysql de la racine
-        volumes:
-            - ./mysql:/var/lib/mysql
     # phpmyadmin
     pma:
         image: phpmyadmin/phpmyadmin
         ports:
             - 8081:80
+        links:
+            - db:db
+
+    # composer
+    composer:
+        build: docker/composer
+        restart: 'no'
+        volumes:
+            - ./htdocs:/app
+        tty: true
         links:
             - db:db
