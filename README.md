@@ -25,22 +25,17 @@ ex: docker-compose exec php bash
 
 ### Doctrine création db
 ```
-docker-compose exec db bash
-cd /usr/local/apache2/htdocs/
-php bin/console doctrine:databasse:create
+docker-compose run composer php bin/console doctrine:database:create
 ```
 
-### Doctrin migration db
+### Doctrine migration db
 ```
-docker-compose exec db bash
-cd /usr/local/apache2/htdocs
-php bin/console doctrine:database:diff
-php bin/console doctrine:database:migrate
+docker-compose run composer php bin/console doctrine:database:diff
+docker-compose run composer php bin/console doctrine:database:migrate
 ```
 
 ### Doctrine Fixtures db
 ```
-docker-compose exec db bash
-cd /usr/local/apache2/htdocs
-php bin/console doctrine:fixtures:load
+docker-compose run composer php bin/console doctrine:fixtures:load
+
 ```
