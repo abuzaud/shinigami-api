@@ -1,8 +1,12 @@
 # Shinigami API
-####URL
+
+#### URL
 http://api.shinigami.buzaud.local:8080
-####PHPMyAdmin
+
+#### PHPMyAdmin
 http://api.shinigami.buzaud.local:8081
+
+
 ## Docker
 ### Lancement du docker
 ```
@@ -10,7 +14,7 @@ docker-compose build (optional)
 docker-compose up -d
 ```
 
-###Ouverture d'un bash dans un container
+### Ouverture d'un bash dans un container
 ```
 docker-compose exec [container] bash
 ex: docker-compose exec php bash
@@ -25,7 +29,7 @@ ex: docker-compose exec php bash
 
 ### Doctrine création db
 ```
-docker-compose run composer php bin/console doctrine:database:create
+docker-compose run composer php bin/console doctrine:database:create --if-not-exists
 ```
 
 ### Doctrine migration db
@@ -37,5 +41,4 @@ docker-compose run composer php bin/console doctrine:database:migrate
 ### Doctrine Fixtures db
 ```
 docker-compose run composer php bin/console doctrine:fixtures:load
-
 ```
