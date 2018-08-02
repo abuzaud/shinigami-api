@@ -1,0 +1,223 @@
+resources:
+    App\Entity\Address:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/addresses'
+            post: ~
+            special:
+                method: 'POST'
+                path: '/addresses'
+                controller: 'App\Controller\AddressSpecial'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/addresses/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/addresses/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/addresses/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Card:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/cards'
+            post: ~
+            special:
+                method: 'POST'
+                path: '/cards'
+                controller: 'App\Controller\CardSpecial'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/cards/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/cards/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/cards/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Client:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/clients'
+            post: ~
+            special:
+                method: 'POST'
+                path: '/clients'
+                controller: 'App\Controller\ClientSpecial'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/clients/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/clients/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/clients/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Establishment:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/establishments'
+            post:
+                method: 'POST'
+                path: '/establishments'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/establishments/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/establishments/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/establishments/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Role:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/roles'
+            post:
+                method: 'POST'
+                path: '/roles'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/roles/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/roles/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/roles/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Staff:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/staff'
+            post:
+                method: 'POST'
+                path: '/staff'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/staff/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/staff/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/staff/{id}'
+                requirements:
+                    id: '\d+'
+
+    App\Entity\Visit:
+        #attributes:
+            #normalization_context:
+                #groups: ['name']
+            #denormalization_context:
+                #groups: ['name']
+        collectionOperations:
+            get:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
+                path: '/visits'
+            post:
+                method: 'POST'
+                path: '/visits'
+        itemOperations:
+            get:
+                method: 'GET'
+                path: '/visits/{id}'
+                requirements:
+                    id: '\d+'
+            put:
+                method: 'PUT'
+                path: '/visits/{id}'
+                requirements:
+                    id: '\d+'
+            delete:
+                method: 'DELETE'
+                path: '/visits/{id}'
+                requirements:
+                    id: '\d+'
