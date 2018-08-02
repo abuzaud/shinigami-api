@@ -10,3 +10,6 @@
 ### PHP Storm ###
 /htdocs/.idea/
 /.idea/
+
+### Migrations ###
+/htdocs/src/Migrations/*.php
