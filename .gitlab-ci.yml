@@ -1,0 +1,26 @@
+image : composer
+
+stages:
+  - build
+  - test
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - htdocs/vendor
+    - htdocs/bin/
+
+install_dependencies:
+  stage: build
+  artifacts:
+    paths:
+      - htdocs/vendor
+  script:
+    - cd htdocs
+    - composer install
+
+test_phpunit:
+  stage: test
+  script:
+    - cd htdocs
+    - php bin/phpunit
