@@ -16,15 +16,11 @@ install_dependencies:
     paths:
       - htdocs/vendor
   script:
-    - pwd
     - cd htdocs
-    #- chmod 777 ./composer_ci
-    #- ./composer_ci install
     - composer install
 
 test_phpunit:
   stage: test
   script:
-    - pwd
     - cd htdocs
     - php bin/phpunit
