@@ -19,6 +19,10 @@ docker-compose up -d
 docker-compose exec [container] bash
 ex: docker-compose exec php bash
 ```
+### Installation des dépendances
+```
+docker-compose run composer composer install
+```
 
 ## Base de données
 ### Connection
