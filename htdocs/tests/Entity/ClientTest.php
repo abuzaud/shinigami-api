@@ -50,7 +50,8 @@ class ClientTest extends TestCase
     /**
      * Test de suppression de cartes du client
      */
-    public function testClientRemoveCard(){
+    public function testClientRemoveCard()
+    {
         $client = new Client();
         $card1 = new Card();
         $card2 = new Card();
@@ -90,7 +91,8 @@ class ClientTest extends TestCase
     /**
      * Test d'ajout et suppression des adresses
      */
-    public function test(){
+    public function test()
+    {
         $client = new Client();
         $address1 = new Address();
         $address2 = new Address();
