@@ -40,6 +40,6 @@ class StaffTest extends TestCase
         $this->assertSame(2, count($staff->getEstablishments()));
 
         $staff->removeEstablishment($establishment1);
-        $this->assertSame(1, count($staff->getgetEstablishments()));
+        $this->assertSame(1, count($staff->getEstablishments()));
     }
 }
