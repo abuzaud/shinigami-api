@@ -47,6 +47,13 @@ class Staff extends User
         $this->establishments = new ArrayCollection();
     }
 
+    public function setUsername(string $username): self
+    {
+        $this->setEmail($username);
+        
+        return $this;
+    }
+
     /**
      * @return string
      */
