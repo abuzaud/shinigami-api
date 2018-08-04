@@ -70,7 +70,7 @@ class ClientTest extends TestCase
     /**
      * Test d'ajout et suppression d'établissements d'un client
      */
-    public function testClientAddEstablishment(){
+    public function testClientAddRemoveEstablishment(){
         $client = new Client();
         $establishment1 = new Establishment();
         $establishment2 = new Establishment();
