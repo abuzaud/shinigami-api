@@ -13,8 +13,12 @@ http://api.shinigami.buzaud.local:8081
 docker-compose build (optional)
 docker-compose up -d
 ```
+Pour voir les logs en direct
+```
+docker-compose logs -f
+```
 
-### Ouverture d'un bash dans un container
+Ouverture d'un bash dans un container
 ```
 docker-compose exec [container] bash
 ex: docker-compose exec php bash
@@ -25,24 +29,24 @@ docker-compose run composer composer install
 ```
 
 ## Base de données
-### Connection
+#### Connection
 1. host : localhost
 2. port : 3306
 3. user : root
 4. mdp : [empty]
 
-### Doctrine création db
+#### Doctrine création db
 ```
 docker-compose run composer php bin/console doctrine:database:create --if-not-exists
 ```
 
-### Doctrine migration db
+#### Doctrine migration db
 ```
-docker-compose run composer php bin/console doctrine:database:diff
-docker-compose run composer php bin/console doctrine:database:migrate
+docker-compose run composer php bin/console doctrine:migrations:diff
+docker-compose run composer php bin/console doctrine:migrations:migrate
 ```
 
-### Doctrine Fixtures db
+#### Doctrine Fixtures db
 ```
 docker-compose run composer php bin/console doctrine:fixtures:load
 ```
