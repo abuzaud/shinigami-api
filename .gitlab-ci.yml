@@ -22,8 +22,8 @@ install_dependencies:
     - cd htdocs
     - composer install
     - php bin/console doctrine:database:create --if-not-exists --env=test
-    - php bin/console doctrine:schema:update --force
-    - php bin/console doctrine:fixtures:load
+    - php bin/console doctrine:schema:update --force --env=test
+    - php bin/console doctrine:fixtures:load --env=test
 
 test_phpunit:
   stage: test
