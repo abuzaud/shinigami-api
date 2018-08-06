@@ -5,7 +5,8 @@ stages:
   - test
 
 before_script:
-  - apk --no-cache sqlite php7-pdo_sqlite
+  - apk update
+  - apk add --no-cache sqlite php7-pdo_sqlite
 
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
