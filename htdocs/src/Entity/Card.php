@@ -30,20 +30,7 @@ class Card
      * @ORM\JoinColumn(nullable=false)
      */
     private $establishment;
-
-    /**
-     * @var string $codeCustomer The customer loyalty code
-     *
-     * @ORM\Column(type="string", length=6, unique=true)
-     */
-    private $codeCustomer;
-
-    /**
-     * @var string $checksum The checksum = (establishment code + customer loyalty code) % 9
-     *
-     * @ORM\Column(type="string", length=1)
-     */
-    private $checksum;
+    
 
     /**
      * @var string $codeCard The establishment code, the customer loyalty code and the checksum
@@ -102,18 +89,6 @@ class Card
     public function setCodeCustomer(int $codeCustomer): self
     {
         $this->codeCustomer = $codeCustomer;
-
-        return $this;
-    }
-
-    public function getChecksum(): ?int
-    {
-        return $this->checksum;
-    }
-
-    public function setChecksum(int $checksum): self
-    {
-        $this->checksum = $checksum;
 
         return $this;
     }
