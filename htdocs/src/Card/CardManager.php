@@ -1,18 +1,16 @@
 <?php
 /**
  * Created by Antoine Buzaud.
- * Date: 06/08/2018
+ * Date: 06/08/2018.
  */
 
 namespace App\Card;
-
 
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class CardManager
- * @package App\Card
+ * Class CardManager.
  */
 class CardManager
 {
@@ -20,6 +18,7 @@ class CardManager
 
     /**
      * CardManager constructor.
+     *
      * @param $em
      */
     public function __construct(EntityManagerInterface $em)
@@ -32,37 +31,72 @@ class CardManager
      * @param string $code
      * @return bool
      */
-    public function checkIfClientCodeExist(string $code): bool
+    public function checkIfCustomerCodeExist(string $code): bool
     {
-        if (strlen($code) === 6) {
+        if (6 === strlen($code)) {
             $card = $this->em->getRepository(Card::class)
                 ->findBy([
-                    'codeClient' => $code
+                    'codeCustomer' => $code,
                 ]);
-
             if (!empty($card)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Génère automatiquement un code client unique
+     * Génère automatiquement un code customer unique.
      */
-    public function generateClientCode()
+    public function generateCustomerCode()
     {
         $code = [];
 
-        for ($i = 0; $i < 6; $i++) {
+        for ($i = 0; $i < 6; ++$i) {
             $code[] = rand(0, 9);
         }
 
-        # On vérifie si le code existe en base
-        if(!$this->checkIfClientCodeExist(implode($code))){
+        // On vérifie si le code existe en base
+        if (!$this->checkIfCustomerCodeExist(implode($code))) {
             return implode($code);
         } else {
-            $this->generateClientCode();
+            $this->generateCustomerCode();
         }
+
+        return false;
+    }
+
+    /**
+     * Vérifie que l'établissement existe bien en base de données
+     */
+    public function checkIfEstablishmentExist()
+    {
+
+    }
+
+    /**
+     * Génère un nouveau code unique pour l'établissement
+     */
+    public function generateEstablishmentCode()
+    {
+
+    }
+
+
+    /**
+     * Génère le checksum de la carte
+     */
+    public function generateChecksum()
+    {
+    }
+
+
+    /**
+     * Génère le code entier de la carte
+     */
+    public function generateCardCode()
+    {
+
     }
 }

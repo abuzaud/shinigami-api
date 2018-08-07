@@ -7,18 +7,16 @@ use App\Entity\Card;
 
 class CardSpecial
 {
-    private $cardmanager;
+    private $cm;
 
-    public function __construct(CardManager $cm)
+    public function __construct(CardManager $cardManager)
     {
-        $this->cardmanager = $cm;
+        $this->cm = $cardManager;
     }
 
     public function __invoke(Card $data)
     {
-
-        $this->cardmanager->checkIfClientCodeExist(681507);
-
+        # Génère le nouveau code de la carte de fidélité
 
         return $data;
     }
