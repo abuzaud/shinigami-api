@@ -24,14 +24,6 @@ class Card
     private $id;
 
     /**
-     * @var Establishment $establishment The establishment code
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $establishment;
-
-    /**
      * @var string $codeCustomer The customer loyalty code
      *
      * @ORM\Column(type="string", length=6, unique=true)
@@ -64,6 +56,14 @@ class Card
      * @ORM\Column(type="integer", nullable=true)
      */
     private $points;
+
+    /**
+     * @var Establishment $establishment The establishment code
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $establishment;
 
     public function __construct()
     {
@@ -164,5 +164,9 @@ class Card
         $this->points = $points;
 
         return $this;
+    }
+
+    public function getEstablishmentCode(){
+        return $this->establishment->getCodeEstablishment();
     }
 }
