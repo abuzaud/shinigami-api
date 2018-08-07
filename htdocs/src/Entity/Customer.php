@@ -3,34 +3,38 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A client
+ * A customer
  *
- * @ApiResource()
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
+ * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  * @ORM\AssociationOverrides({
  *      @ORM\AssociationOverride(name="addresses",
  *          joinTable=@ORM\JoinTable(
- *              name="client_address",
- *              joinColumns=@ORM\JoinColumn(name="client_id"),
+ *              name="customer_address",
+ *              joinColumns=@ORM\JoinColumn(name="customer_id"),
  *              inverseJoinColumns=@ORM\JoinColumn(name="address_id")
  *          )
  *      ),
- *     @ORM\AssociationOverride(name="roles",
+ *     @ORM\AssociationOverride(name="userRoles",
  *          joinTable=@ORM\JoinTable(
- *              name="client_role",
- *              joinColumns=@ORM\JoinColumn(name="client_id"),
+ *              name="customer_role",
+ *              joinColumns=@ORM\JoinColumn(name="customer_id"),
  *              inverseJoinColumns=@ORM\JoinColumn(name="role_id")
  *          )
  *      )
  * })
  */
-class Client extends User
+class Customer extends User
 {
     /**
      * @var string $username The username
@@ -43,7 +47,7 @@ class Client extends User
     /**
      * @var Card $cards The list of cards
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="customer")
      */
     private $cards;
 
@@ -72,6 +76,8 @@ class Client extends User
 
         return $this;
     }
+
+
 
     /**
      * @return Collection|Card[]
@@ -124,4 +130,6 @@ class Client extends User
 
         return $this;
     }
+
+
 }

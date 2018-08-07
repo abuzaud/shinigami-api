@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,6 +26,7 @@ abstract class User implements UserInterface
      * @var string $firstName The first name
      *
      * @ORM\Column(type="string", length=50)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $firstName;
@@ -32,6 +35,7 @@ abstract class User implements UserInterface
      * @var string $lastName The last name
      *
      * @ORM\Column(type="string", length=50)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $lastName;
@@ -40,6 +44,7 @@ abstract class User implements UserInterface
      * @var string $email The email
      *
      * @ORM\Column(type="string", length=80, unique=true)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Email()
      */
@@ -49,6 +54,7 @@ abstract class User implements UserInterface
      * @var string $password The password
      *
      * @ORM\Column(type="string", length=128)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Length(min="8", max="20")
      */
@@ -58,10 +64,7 @@ abstract class User implements UserInterface
      * @var Collection $addresses The addresses
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Address")
-     * @ORM\JoinTable(name="users_addresses",
-     *  joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *  inverseJoinColumns={@ORM\JoinColumn(name="address_id", referencedColumnName="id")}
-     * )
+     * @ApiSubresource()
      */
     private $addresses;
 
@@ -69,6 +72,7 @@ abstract class User implements UserInterface
      * @var string $phoneNumber The phone number
      *
      * @ORM\Column(type="string", length=20)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Regex("/^\d+/")
      */
@@ -78,6 +82,7 @@ abstract class User implements UserInterface
      * @var \datetime $birthday The birthday
      *
      * @ORM\Column(type="date")
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Date()
      */
@@ -112,20 +117,19 @@ abstract class User implements UserInterface
     private $token;
 
     /**
-     * @var Collection $roles The list of roles
+     * @var Collection $userRoles The list of roles
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
-     * @ORM\JoinTable(name="users_roles",
-     *  joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *  inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role", cascade={"persist"})
+     * @Groups({"read", "write"})
      */
+    private $userRoles;
+
     private $roles;
 
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
-        $this->roles = new ArrayCollection();
+        $this->userRoles = new ArrayCollection();
     }
 
     public function getId()
@@ -279,27 +283,45 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    public function getRoles(): array
+    {
+        $this->roles = [];
+        /*if (!\in_array('ROLE_USER', $this->roles, true)) {
+            $this->roles[] = 'ROLE_USER';
+        }*/
+        foreach ($this->userRoles->toArray() as $role) {
+            if (!\in_array($role, $this->roles, true)) {
+                $this->roles[] = $role->getRole();
+            }
+        }
+        return $this->roles;
+
+        /*return [
+            'ROLE_USER'
+        ];*/
+    }
+
     /**
      * @return Collection|Role[]
      */
-    public function getRoles(): Collection
+    public function getUserRoles(): Collection
     {
-        return $this->roles;
+        return $this->userRoles;
     }
 
-    public function addRole(Role $role): self
+    public function addUserRole(Role $role): self
     {
-        if (!$this->roles->contains($role)) {
-            $this->roles[] = $role;
+        if (!$this->userRoles->contains($role)) {
+            $this->userRoles[] = $role;
         }
 
         return $this;
     }
 
-    public function removeRole(Role $role): self
+    public function removeUserRole(Role $role): self
     {
-        if ($this->roles->contains($role)) {
-            $this->roles->removeElement($role);
+        if ($this->userRoles->contains($role)) {
+            $this->userRoles->removeElement($role);
         }
 
         return $this;

@@ -26,7 +26,7 @@ class StaffTest extends TestCase
     /**
      * Test d'ajout et suppression d'établissements d'un staff
      */
-    public function testClientAddRemoveEstablishment(){
+    public function testStaffAddRemoveEstablishment(){
         $staff = new Staff();
         $establishment1 = new Establishment();
         $establishment2 = new Establishment();

@@ -1,24 +1,56 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User: bcrypt
+
     providers:
-        in_memory: { memory: ~ }
+        in_memory: {memory: ~}
+        chain_provider:
+            chain:
+                providers: [db_customers, db_staff]
+        db_customers:
+            entity:
+                class: App\Entity\Customer
+                property: email
+        db_staff:
+            entity:
+                class: App\Entity\Staff
+                property: email
     firewalls:
+        login:
+            pattern: ^/api/login
+            stateless: true
+            anonymous: true
+            provider: chain_provider
+            json_login:
+                check_path: api_login_check
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            anonymous: true
+            provider: chain_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
-            anonymous: true
-
-            # activate different ways to authenticate
-
-            # http_basic: true
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: true
-            # https://symfony.com/doc/current/security/form_login_setup.html
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        #- { path: ^/api/confirm, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/api/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/api/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/api/login, roles: ROLE_ESTABLISHMENT }
+        #- { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
+    role_hierarchy:
+        ROLE_ESTABLISHMENT: ROLE_USER
+        ROLE_CUSTOMER: ROLE_ESTABLISHMENT
+        ROLE_STAFF: ROLE_CUSTOMER
+        ROLE_ADMIN: ROLE_STAFF
+        ROLE_API: ROLE_ADMIN

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
+use App\Entity\Customer;
 
-class ClientSpecial
+class CustomerSpecial
 {
     //private $myService;
 
@@ -13,7 +13,7 @@ class ClientSpecial
         //$this->myService = $myService;
     }
 
-    public function __invoke(Client $data)
+    public function __invoke(Customer $data)
     {
         //$this->myService->doSomething($data);
 

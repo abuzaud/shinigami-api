@@ -54,16 +54,15 @@ class StaffFixtures extends Fixture implements DependentFixtureInterface
             $staff->setFirstName('Firstname ' . $i);
             $staff->setLastName('Lastname ' . $i);
             $staff->setEmail('staff' . $i . '@shinigami.com');
-            //$password = $this->encoder->encodePassword($staff, 'webforce3');
-            //$staff->setPassword($password);
-            $staff->setPassword('staff_password');
+            $password = $this->encoder->encodePassword($staff, 'staff_password');
+            $staff->setPassword($password);
             $staff->addAddress($this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]));
             $staff->setPhoneNumber($phoneNumber);
             $staff->setBirthday(new \DateTime('now'));
             $staff->setRegistrationDate(new \DateTime('now'));
             $staff->setIsActive(true);
             $staff->setToken('123');
-            $staff->addRole($this->getReference(RoleFixtures::ROLE_REFERENCE . 'staff'));
+            $staff->addUserRole($this->getReference(RoleFixtures::ROLE_REFERENCE . 'staff'));
             $staff->addEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
             $manager->persist($staff);
         }
@@ -82,16 +81,15 @@ class StaffFixtures extends Fixture implements DependentFixtureInterface
         $staff->setFirstName('Admin');
         $staff->setLastName('Shinigami');
         $staff->setEmail('admin@shinigami.com');
-        //$password = $this->encoder->encodePassword($staff, 'webforce3');
-        //$staff->setPassword($password);
-        $staff->setPassword('admin_password');
+        $password = $this->encoder->encodePassword($staff, 'admin_password');
+        $staff->setPassword($password);
         $staff->addAddress($this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]));
         $staff->setPhoneNumber($phoneNumber);
         $staff->setBirthday(new \DateTime('now'));
         $staff->setRegistrationDate(new \DateTime('now'));
         $staff->setIsActive(true);
         $staff->setToken('123');
-        $staff->addRole($this->getReference(RoleFixtures::ROLE_REFERENCE . 'staff'));
+        $staff->addUserRole($this->getReference(RoleFixtures::ROLE_REFERENCE . 'staff'));
         $staff->addEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
         $manager->persist($staff);
 

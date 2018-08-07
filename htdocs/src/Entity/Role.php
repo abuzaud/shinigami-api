@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -10,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
-class Role
+class Role implements RoleHierarchyInterface
 {
     /**
      * @ORM\Id()
@@ -76,8 +79,25 @@ class Role
      */
     public function setRole(string $role): self
     {
+        $role = strtoupper($role);
+        if (strrpos($role, 'ROLE_') !== 0) {
+            $role = 'ROLE_' . $role;
+        }
         $this->role = $role;
 
         return $this;
+    }
+
+    /**
+     * Returns an array of all reachable roles by the given ones.
+     * Reachable roles are the roles directly assigned but also all roles that
+     * are transitively reachable from them in the role hierarchy.
+     *
+     * @param Role[] $roles An array of directly assigned roles
+     * @return Role[] An array of all reachable roles
+     */
+    public function getReachableRoles(array $roles)
+    {
+
     }
 }

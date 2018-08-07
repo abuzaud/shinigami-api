@@ -1,4 +1,15 @@
 api_platform:
+    title: 'API Shinigami'
+    #description: ''
+    version: '1.0.0'
+    name_converter: ~
+
     mapping:
         #paths: ['%kernel.project_dir%/src/Entity']
         paths: ['%kernel.project_dir%/config/api_platform/resources.yaml']
+
+    #swagger:
+        #api_keys:
+            #apiKey:
+                #type: header
+                #name: Authorization
