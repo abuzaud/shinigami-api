@@ -30,7 +30,13 @@ class Card
      * @ORM\JoinColumn(nullable=false)
      */
     private $establishment;
-    
+
+    /**
+     * @var string $codeCustomer The customer loyalty code
+     *
+     * @ORM\Column(type="string", length=6, unique=true)
+     */
+    private $codeCustomer;
 
     /**
      * @var string $codeCard The establishment code, the customer loyalty code and the checksum

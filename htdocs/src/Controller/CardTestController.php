@@ -7,6 +7,7 @@
 namespace App\Controller;
 
 
+use App\Card\CardFactory;
 use App\Card\CardManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,11 @@ class CardTestController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function testCardGeneration(CardManager $cm)
+    public function testCardGeneration(CardManager $cm, CardFactory $cardFactory)
     {
-        $test = $cm->generateCardCode(494);
-        
+        $test = $cardFactory->createCard(729);
+
+        dump($test);
 
         return $this->render('debug/cardgeneration.html.twig');
     }
