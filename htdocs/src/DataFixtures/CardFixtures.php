@@ -23,23 +23,23 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $establishments = range(1, 3);
-        $clients = range(1, 100);
+        $customers = range(1, 100);
 
         for ($i = 1; $i <= 50; $i++) {
             shuffle($establishments);
-            $codeClient = '';
+            $codeCustomer = '';
             $count = 0;
             while ($count < 6) {
-                $codeClient .= random_int(0, 9);
+                $codeCustomer .= random_int(0, 9);
                 $count++;
             }
-            shuffle($clients);
+            shuffle($customers);
 
             $card = new Card();
             $card->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
-            $card->setCodeClient($codeClient);
+            $card->setCodeCustomer($codeCustomer);
             $card->setChecksum(random_int(1, 9));
-            $card->setClient($this->getReference(ClientFixtures::CLIENT_FIXTURES . $clients[1]));
+            $card->setCustomer($this->getReference(CustomerFixtures::CUSTOMER_FIXTURES . $customers[1]));
             $card->setCodeCard('');
             $manager->persist($card);
             $this->addReference(self::CARD_REFERENCE . $i, $card);
@@ -55,7 +55,7 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             EstablishmentFixtures::class,
-            ClientFixtures::class
+            CustomerFixtures::class
         ];
     }
 }

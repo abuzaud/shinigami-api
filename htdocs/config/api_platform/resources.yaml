@@ -31,7 +31,7 @@ resources:
                 path: '/addresses/{id}'
                 requirements:
                     id: '\d+'
-
+                    
     App\Entity\Card:
         #attributes:
             #normalization_context:
@@ -41,90 +41,98 @@ resources:
         collectionOperations:
             get:
                 method: 'GET'
-                #access_control: 'is_granted("ROLE_ADMIN")'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
                 path: '/cards'
             post: ~
             special:
                 method: 'POST'
+                #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/cards'
                 controller: 'App\Controller\CardSpecial'
         itemOperations:
             get:
                 method: 'GET'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
                 path: '/cards/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
+                #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/cards/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
+                #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/cards/{id}'
                 requirements:
                     id: '\d+'
 
-    App\Entity\Client:
-        #attributes:
-            #normalization_context:
-                #groups: ['name']
-            #denormalization_context:
-                #groups: ['name']
+    App\Entity\Customer:
+        attributes:
+            normalization_context: {groups: ['read']}
+            denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
-                #access_control: 'is_granted("ROLE_ADMIN")'
-                path: '/clients'
+                #access_control: 'is_granted("ROLE_STAFF")'
+                path: '/customers'
             post: ~
             special:
                 method: 'POST'
-                path: '/clients'
-                controller: 'App\Controller\ClientSpecial'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: '/customers'
+                controller: 'App\Controller\CustomerSpecial'
         itemOperations:
             get:
                 method: 'GET'
-                path: '/clients/{id}'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
+                path: '/customers/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
-                path: '/clients/{id}'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
+                path: '/customers/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
-                path: '/clients/{id}'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
+                path: '/customers/{id}'
                 requirements:
                     id: '\d+'
 
     App\Entity\Establishment:
-        #attributes:
-            #normalization_context:
-                #groups: ['name']
-            #denormalization_context:
-                #groups: ['name']
+        attributes:
+            normalization_context: {groups: ['read']}
+            denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
-                #access_control: 'is_granted("ROLE_ADMIN")'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
                 path: '/establishments'
             post:
                 method: 'POST'
+                #access_control: 'is_granted("ROLE_API")'
                 path: '/establishments'
         itemOperations:
             get:
                 method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
                 path: '/establishments/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/establishments/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
+                #access_control: 'is_granted("ROLE_API")'
                 path: '/establishments/{id}'
                 requirements:
                     id: '\d+'
@@ -142,20 +150,24 @@ resources:
                 path: '/roles'
             post:
                 method: 'POST'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/roles'
         itemOperations:
             get:
                 method: 'GET'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/roles/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/roles/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/roles/{id}'
                 requirements:
                     id: '\d+'
@@ -173,20 +185,24 @@ resources:
                 path: '/staff'
             post:
                 method: 'POST'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/staff'
         itemOperations:
             get:
                 method: 'GET'
+                #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/staff/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
+                #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/staff/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
+                #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/staff/{id}'
                 requirements:
                     id: '\d+'
@@ -200,24 +216,28 @@ resources:
         collectionOperations:
             get:
                 method: 'GET'
-                #access_control: 'is_granted("ROLE_ADMIN")'
+                #access_control: 'is_granted("IS_AUTHENTICATED_FULLY")'
                 path: '/visits'
             post:
                 method: 'POST'
+                #access_control: 'is_granted("IS_AUTHENTICATED_FULLY")'
                 path: '/visits'
         itemOperations:
             get:
                 method: 'GET'
+                #access_control: 'is_granted("IS_AUTHENTICATED_FULLY")'
                 path: '/visits/{id}'
                 requirements:
                     id: '\d+'
             put:
                 method: 'PUT'
+                #access_control: 'is_granted("IS_AUTHENTICATED_FULLY")'
                 path: '/visits/{id}'
                 requirements:
                     id: '\d+'
             delete:
                 method: 'DELETE'
+                #access_control: 'is_granted("IS_AUTHENTICATED_FULLY")'
                 path: '/visits/{id}'
                 requirements:
                     id: '\d+'

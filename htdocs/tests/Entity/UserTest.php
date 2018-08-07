@@ -9,7 +9,7 @@
 namespace App\Tests\Entity;
 
 
-use App\Entity\Client;
+use App\Entity\Customer;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 

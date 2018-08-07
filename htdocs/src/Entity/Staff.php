@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              inverseJoinColumns=@ORM\JoinColumn(name="address_id")
  *          )
  *      ),
- *     @ORM\AssociationOverride(name="roles",
+ *     @ORM\AssociationOverride(name="userRoles",
  *          joinTable=@ORM\JoinTable(
  *              name="staff_role",
  *              joinColumns=@ORM\JoinColumn(name="user_id"),
@@ -61,6 +61,8 @@ class Staff extends User
     {
         return $this->getEmail();
     }
+
+
 
     /**
      * @return Collection|Establishment[]
