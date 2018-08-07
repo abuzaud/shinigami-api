@@ -47,7 +47,7 @@ resources:
             special:
                 method: 'POST'
                 #access_control: 'is_granted("ROLE_STAFF")'
-                path: '/cards'
+                path: '/card/new'
                 controller: 'App\Controller\CardSpecial'
         itemOperations:
             get:
