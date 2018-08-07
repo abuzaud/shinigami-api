@@ -18,13 +18,13 @@ class CardTestController extends Controller
      * @Route("/test/cardgeneration", name="card_generation")
      * @param CardManager $cm
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function testCardGeneration(CardManager $cm)
     {
-        $test = $cm->checkIfCustomerCodeExist(9999);
-
-        dump($test);
+        $test = $cm->generateCardCode(494);
         
+
         return $this->render('debug/cardgeneration.html.twig');
     }
 }
