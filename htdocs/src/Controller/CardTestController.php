@@ -21,7 +21,7 @@ class CardTestController extends Controller
      */
     public function testCardGeneration(CardManager $cm)
     {
-        $test = $cm->checkIfClientCodeExist(9999);
+        $test = $cm->checkIfCustomerCodeExist(9999);
 
         dump($test);
         
