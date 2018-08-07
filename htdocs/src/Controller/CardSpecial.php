@@ -2,20 +2,21 @@
 
 namespace App\Controller;
 
+use App\Card\CardManager;
 use App\Entity\Card;
 
 class CardSpecial
 {
-    //private $myService;
+    private $cm;
 
-    public function __construct()
+    public function __construct(CardManager $cardManager)
     {
-        //$this->myService = $myService;
+        $this->cm = $cardManager;
     }
 
     public function __invoke(Card $data)
     {
-        //$this->myService->doSomething($data);
+        # Génère le nouveau code de la carte de fidélité
 
         return $data;
     }

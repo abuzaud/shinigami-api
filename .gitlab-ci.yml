@@ -4,6 +4,10 @@ stages:
   - build
   - test
 
+before_script:
+  - apk update
+  - apk add --no-cache sqlite php7-pdo_sqlite
+
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
   paths:
@@ -18,6 +22,9 @@ install_dependencies:
   script:
     - cd htdocs
     - composer install
+    - php bin/console doctrine:database:create --env=test
+    - php bin/console doctrine:schema:update --force --env=test
+    - php bin/console doctrine:fixtures:load --env=test
 
 test_phpunit:
   stage: test

@@ -13,3 +13,6 @@
 
 ### Migrations ###
 /htdocs/src/Migrations/*.php
+
+### Tests ###
+/htdocs/post_api_test.json

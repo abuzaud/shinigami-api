@@ -32,32 +32,32 @@ class Card
     private $establishment;
 
     /**
-     * @var string $codeClient The client loyalty code
+     * @var string $codeCustomer The customer loyalty code
      *
      * @ORM\Column(type="string", length=6, unique=true)
      */
-    private $codeClient;
+    private $codeCustomer;
 
     /**
-     * @var string $checksum The checksum = (establishment code + client loyalty code) % 9
+     * @var string $checksum The checksum = (establishment code + customer loyalty code) % 9
      *
      * @ORM\Column(type="string", length=1)
      */
     private $checksum;
 
     /**
-     * @var string $codeCard The establishment code, the client loyalty code and the checksum
+     * @var string $codeCard The establishment code, the customer loyalty code and the checksum
      *
      * @ORM\Column(type="string", length=12)
      */
     private $codeCard;
 
     /**
-     * @var Client $client The client
+     * @var Customer $customer The customer
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="cards")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="cards")
      */
-    private $client;
+    private $customer;
 
     /**
      * @var Visit $visits The use of the loyalty card
@@ -94,14 +94,14 @@ class Card
         return $this;
     }
 
-    public function getCodeClient(): ?int
+    public function getCodeCustomer(): ?int
     {
-        return $this->codeClient;
+        return $this->codeCustomer;
     }
 
-    public function setCodeClient(int $codeClient): self
+    public function setCodeCustomer(int $codeCustomer): self
     {
-        $this->codeClient = $codeClient;
+        $this->codeCustomer = $codeCustomer;
 
         return $this;
     }
@@ -130,14 +130,14 @@ class Card
         return $this;
     }
 
-    public function getClient(): ?Client
+    public function getCustomer(): ?Customer
     {
-        return $this->client;
+        return $this->customer;
     }
 
-    public function setClient(?Client $client): self
+    public function setCustomer(?Customer $customer): self
     {
-        $this->client = $client;
+        $this->customer = $customer;
 
         return $this;
     }
