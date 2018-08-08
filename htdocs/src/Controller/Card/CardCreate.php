@@ -5,7 +5,7 @@ namespace App\Controller\Card;
 use App\Card\CardFactory;
 use App\Entity\Card;
 
-class CardSpecial
+class CardCreate
 {
     private $cf;
 
@@ -26,7 +26,7 @@ class CardSpecial
             $data = $this->cf->createCard($codeEstablishment);
         } catch (\Exception $e) {
             echo "Une exception a été levé dans le fichier [".$e->getFile()."][ligne : ".$e->getLine()."].".PHP_EOL;
-            echo $e->getMessage().PHP_EOL.$e->getCode();
+            echo $e->getMessage().PHP_EOL.$e->getCode().PHP_EOL;
         }
 
         return $data;

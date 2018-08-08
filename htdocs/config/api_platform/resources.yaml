@@ -51,7 +51,7 @@ resources:
                 method: 'POST'
                 #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/card/new'
-                controller: 'App\Controller\Card\CardSpecial'
+                controller: 'App\Controller\Card\CardCreate'
                 swagger_context:
                     summary: 'Création de carte de fidélité'
                     description: "Créer une nouvelle carte de fidélité à partir d'un établissement existant"
@@ -93,7 +93,7 @@ resources:
                 swagger_context:
                     summary: "Modification d'une carte de fidélité"
                     description: "Permet de modifier une carte de fidélité à partir de son id"
-                    
+
             delete:
                 method: 'DELETE'
                 #access_control: 'is_granted("ROLE_STAFF")'
