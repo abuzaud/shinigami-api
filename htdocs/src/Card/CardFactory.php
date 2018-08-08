@@ -23,6 +23,7 @@ class CardFactory
     /**
      * CardFactory constructor.
      * @param CardManager $cardManager
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(CardManager $cardManager, EntityManagerInterface $entityManager)
     {
@@ -31,16 +32,16 @@ class CardFactory
     }
 
     /**
-     * Créé un objet Carte
+     * Créé une carte de fidélité depuis un code d'établissement
      * Prend en paramètre un code d'établissement
      * @param $codeEstablishment
      * @return Card|false
      * @throws \Exception
      */
-    public function createCard($codeEstablishment)
+    public function createCardFromEstablishmentCode($codeEstablishment)
     {
         # On vérifie que l'établissement existe bien
-        if(!$this->cm->checkIfEstablishmentCodeExist($codeEstablishment)){
+        if (!$this->cm->checkIfEstablishmentCodeExist($codeEstablishment)) {
             return false;
         }
 
@@ -50,12 +51,37 @@ class CardFactory
         # On récupère l'établissement
         $establishment = $this->em->getRepository(Establishment::class)
             ->findOneBy([
-               'codeEstablishment' => $codeEstablishment
+                'codeEstablishment' => $codeEstablishment
             ]);
         $card->setEstablishment($establishment);
 
         # On génère les codes de la carte
         $card->setCodeCard($this->cm->generateCardCode($codeEstablishment));
+        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
+
+        return $card;
+    }
+
+
+    /**
+     * Créé une carte de fidélité depuis un id d'établissement
+     * @param int $id
+     * @return Card|bool
+     * @throws \Exception
+     */
+    public function createCardFromEstablishmentId(int $id)
+    {
+        $establishment = $this->em->getRepository(Establishment::class)->find($id);
+
+        # On vérifie que l'établissement existe bien
+        if (empty($establishment)) {
+            return false;
+        }
+
+        $card = new Card();
+
+        $card->setEstablishment($establishment);
+        $card->setCodeCard($this->cm->generateCardCode($establishment->getCodeEstablishment()));
         $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
 
         return $card;
