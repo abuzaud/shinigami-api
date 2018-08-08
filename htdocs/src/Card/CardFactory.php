@@ -86,4 +86,13 @@ class CardFactory
 
         return $card;
     }
+
+
+    /**
+     * Créé une entité Card
+     * @return Card
+     */
+    public function createCard(){
+        return new Card();
+    }
 }
