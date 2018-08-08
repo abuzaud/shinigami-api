@@ -142,9 +142,10 @@ class CardManager
 
     /**
      * Génère un QRCode
+     * TODO: Installer https://packagist.org/packages/endroid/qr-code-bundle et implémenter la génération des QRCode
      * @param string $data
      */
     public function generateQRCode(string $data){
-        
+
     }
 }
