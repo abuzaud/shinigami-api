@@ -22,7 +22,12 @@ class CardSpecial
 
         $codeEstablishment = $data->getEstablishmentCode();
 
-        $data = $this->cf->createCard($codeEstablishment);
+        try {
+            $data = $this->cf->createCard($codeEstablishment);
+        } catch (\Exception $e) {
+            echo "Une exception a été levé dans le fichier [".$e->getFile()."][ligne : ".$e->getLine()."].".PHP_EOL;
+            echo $e->getMessage().PHP_EOL.$e->getCode();
+        }
 
         return $data;
     }
