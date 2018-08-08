@@ -9,6 +9,8 @@ namespace App\Controller;
 
 use App\Card\CardFactory;
 use App\Card\CardManager;
+use App\Card\CardPdf;
+use App\Entity\Customer;
 use App\Entity\Establishment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +21,31 @@ use Symfony\Component\Serializer\Serializer;
 
 class CardTestController extends Controller
 {
+
+    /**
+     * @Route("/test/cardpdf", name="card_pdf")
+     * @param CardFactory $cardFactory
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager)
+    {
+        $customer = new Customer();
+        $customer->setFirstName('Antoine')->setLastName('Buzaud');
+        $customer->setEmail('antoine.buzaud@gmail.com');
+
+        $card = $cardFactory->createCardFromEstablishmentId(1);
+        $card->setCodeCustomer(456);
+        $card->setCustomer($customer);
+        $card->setCodeCard($cardManager->generateCardCode($card->getEstablishmentCode()));
+
+
+        return $this->render('debug/cardpdf.html.twig', [
+            'title' => 'Test Génération PDF carte',
+            'card' => $card
+        ]);
+    }
+
     /**
      * @Route("/test/cardgeneration", name="card_generation")
      * @param CardManager $cm
@@ -29,11 +56,11 @@ class CardTestController extends Controller
     public function testCardGeneration(CardManager $cm, CardFactory $cardFactory)
     {
         $establishment = new Establishment();
-        $establishment->setCodeEstablishment(835);
+        $establishment->setCodeEstablishment(123);
         $establishment->setName('Lycée Buffon');
         $establishment->setDescription('Prout');
 
-        $card = $cardFactory->createCard(835);
+        $card = $cardFactory->createCardFromEstablishmentCode(123);
         $card->setEstablishment($establishment);
 
 
@@ -49,10 +76,11 @@ class CardTestController extends Controller
         $jsonCard = $serializer->serialize($card, 'json');
 
         $datas = [];
-        #$datas[] = $jsonEstablishment;
+        $datas[] = $jsonEstablishment;
         $datas[] = $jsonCard;
 
         return $this->render('debug/cardgeneration.html.twig', [
+            'title' => 'Test Génération de carte',
             'datas' => $datas
         ]);
     }

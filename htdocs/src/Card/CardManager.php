@@ -103,8 +103,7 @@ class CardManager
         # On vérifie s'il existe en base de données
         if (!$this->checkIfEstablishmentCodeExist(implode($code))) {
             return implode($code);
-        }
-        else{
+        } else {
             $this->generateEstablishmentCode();
         }
         return false;
@@ -119,7 +118,7 @@ class CardManager
      */
     public function generateChecksum(string $codeEstablishment, string $codeCustomer): ?string
     {
-        if( strlen($codeEstablishment) === 3 && strlen($codeCustomer) === 6 ){
+        if (strlen($codeEstablishment) === 3 && strlen($codeCustomer) === 6) {
             return ((intval($codeEstablishment) + intval($codeCustomer)) % 9);
         }
         return false;
@@ -135,9 +134,17 @@ class CardManager
      */
     public function generateCardCode(string $codeEstablishment)
     {
-        $codeCustomer =  $this->generateCustomerCode();
-        $checksum = $this->generateChecksum($codeEstablishment,$codeCustomer);
+        $codeCustomer = $this->generateCustomerCode();
+        $checksum = $this->generateChecksum($codeEstablishment, $codeCustomer);
 
-        return strval($codeEstablishment).strval($codeCustomer).strval($checksum);
+        return strval($codeEstablishment) . strval($codeCustomer) . strval($checksum);
+    }
+
+    /**
+     * Génère un QRCode
+     * @param string $data
+     */
+    public function generateQRCode(string $data){
+        
     }
 }

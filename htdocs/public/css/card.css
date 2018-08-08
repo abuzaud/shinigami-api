@@ -1,0 +1,36 @@
+.card-details{
+    margin-bottom: 20px;
+}
+
+.card-container{
+
+}
+
+.card{
+    width: 600px;
+    height: 300px;
+    margin: 0 auto;
+    border-radius: 10px;
+    background: #bababa;
+}
+
+.loyalty{
+
+}
+
+.brand{
+    text-align: right;
+}
+
+.establishment{
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.qrcode{
+    width: 150px;
+    height: 150px;
+    border: black solid;
+    position: absolute;
+    right: 15px;
+}
