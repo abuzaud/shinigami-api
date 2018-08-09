@@ -25,10 +25,11 @@ class CardTestController extends Controller
     /**
      * @Route("/test/cardpdf", name="card_pdf")
      * @param CardFactory $cardFactory
+     * @param CardManager $cardManager
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager)
+    public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager, CardPdf $pdf)
     {
         $customer = new Customer();
         $customer->setFirstName('Antoine')->setLastName('Buzaud');
@@ -39,8 +40,14 @@ class CardTestController extends Controller
         $card->setCustomer($customer);
         $card->setCodeCard($cardManager->generateCardCode($card->getEstablishmentCode()));
 
+        $card->setCodeCard('1233977872');
+        # Génération de la carte
+        $pdf = $pdf->generateLoyaltyCardFromEntity($card);
 
-        return $this->render('debug/cardpdf.html.twig', [
+        dump($pdf);
+
+        #return $this->render('debug/cardpdf.html.twig', [
+        return $this->render('pdf/card.html.twig', [
             'title' => 'Test Génération PDF carte',
             'card' => $card
         ]);

@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{  absolute_url(asset('css/card.css')) }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block javascripts %}
+<div></div>
+{% endblock %}
+
+{% block layout %}
+    <div class="row">
+        <div class="card-container col-12">
+            <div class="card container">
+                <div class="top row">
+                    <div class="loyalty col-6">
+                        <p class="h1">Carte de</p>
+                        <p class="h1 text-uppercase">Fidélité</p>
+                    </div>
+                    <div class="brand col-6">
+                        <div class="h1 text-uppercase">
+                            Shinigami
+                        </div>
+                        <div class="h1">
+                            Laser Game
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom row">
+                    <div class="datas-container col-8">
+                        <div class="establishment h5">
+                            <div class="address">96 Rue du Faubourg Figuerolles</div>
+                            <div class="CP">34070 Montpellier</div>
+                        </div>
+
+                        <div class="name h5">
+                            <span class="firstname">Antoine</span>
+                            <span class="lastname text-uppercase">Buzaud</span>
+                        </div>
+                        <div class="code h4">
+                            <span class="code-establishment">123</span>&nbsp;
+                            <span class="code-client">456789</span>&nbsp;
+                            <span class="code-checksum">0</span>
+                        </div>
+                    </div>
+                    <div class="qrcode-container col-4">
+                        <div class="qrcode"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -11,9 +11,12 @@ use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Snappy\Pdf;
 
+/**
+ * Class CardPdf
+ * @package App\Card
+ */
 class CardPdf
 {
-
     private $cm;
     private $em;
     private $pdfGenerator;
@@ -28,16 +31,66 @@ class CardPdf
     {
         $this->cm = $cardManager;
         $this->em = $entityManager;
-        $this->pdfGenerator = $pdfGenerator;
         $this->twig = $twig;
+
+        $this->pdfGenerator = $pdfGenerator;
+        $this->pdfGenerator->setOption('no-background', true);
     }
 
-    public function generate(Card $card)
+
+    /**
+     * Permet de générer un pdf depuis une entité card
+     * @param Card $card
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function generateLoyaltyCardFromEntity(Card $card)
     {
-        $this->pdfGenerator->generateFromHtml($this->renderTemplate($card), '/pdf/file.pdf');
+        $html = $this->renderCardHTML($card);
+        dump($html);
+
+        $output = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
+
+        $options = [
+            'lowquality' => false,
+            'page-size' => 'A4',
+            'viewport-size' => '1024x768',
+            'enable-javascript' => true,
+            'images' => true,
+            'print-media-type' => true,
+            'encoding' => 'UTF-8',
+            'javascript-delay' => 10000,
+            'no-stop-slow-scripts' => true
+        ];
+
+        $this->generate($html, $output, $options);
+
+        return $html;
     }
 
-    public function renderTemplate(Card $card){
+
+    /**
+     * Génère un fichier PDF depuis du html
+     * @param $html
+     * @param $output
+     * @param $options
+     */
+    public function generate($html, $output, $options)
+    {
+        $this->pdfGenerator->generateFromHtml($html, $output, $options, true);
+    }
+
+    /**
+     * @param Card $card
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    public function renderCardHTML(Card $card)
+    {
         return $this->twig->render('pdf/card.html.twig', [
             'card' => $card
         ]);
