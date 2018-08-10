@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Customer;
+use App\Service\UtilsService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -22,12 +23,19 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
     private $encoder;
 
     /**
-     * UserFixtures constructor.
-     * @param UserPasswordEncoderInterface $encoder
+     * @var UtilsService
      */
-    public function __construct(UserPasswordEncoderInterface $encoder)
+    private $utils;
+
+    /**
+     * CustomerFixtures constructor.
+     * @param UserPasswordEncoderInterface $encoder
+     * @param UtilsService $utils
+     */
+    public function __construct(UserPasswordEncoderInterface $encoder, UtilsService $utils)
     {
         $this->encoder = $encoder;
+        $this->utils = $utils;
     }
 
     /**
@@ -49,23 +57,29 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
                 $count++;
             }
             shuffle($establishments);
+            $token = $this->utils->generateSecureRandomString(16);
+            $address = $this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]);
+            $establishment = $this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]);
+            $role = $this->getReference(RoleFixtures::ROLE_REFERENCE . 'customer');
 
             $customer = new Customer();
+            $password = $this->encoder->encodePassword($customer, 'customer_password');
             $customer->setFirstName('Firstname ' . $i);
             $customer->setLastName('Lastname ' . $i);
             $customer->setUsername('username' . $i);
             $customer->setEmail('customer' . $i . '@domain.com');
-            $password = $this->encoder->encodePassword($customer, 'customer_password');
             $customer->setPassword($password);
-            $customer->addAddress($this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]));
+            $customer->addAddress($address);
             $customer->setPhoneNumber($phoneNumber);
             $customer->setBirthday(new \DateTime('now'));
             $customer->setRegistrationDate(new \DateTime('now'));
             $customer->setIsActive(true);
-            $customer->setToken('123');
-            $customer->addUserRole($this->getReference(RoleFixtures::ROLE_REFERENCE . 'customer'));
-            $customer->addEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
+            $customer->setToken($token);
+            $customer->addUserRole($role);
+            $customer->addEstablishment($establishment);
+
             $manager->persist($customer);
+
             $this->addReference(self::CUSTOMER_FIXTURES . $i, $customer);
         }
 

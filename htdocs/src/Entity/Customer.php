@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,6 +40,7 @@ class Customer extends User
      * @var string $username The username
      *
      * @ORM\Column(type="string", length=50)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $username;
@@ -48,6 +49,7 @@ class Customer extends User
      * @var Card $cards The list of cards
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="customer")
+     * @Groups({"read", "write"})
      */
     private $cards;
 
@@ -55,9 +57,13 @@ class Customer extends User
      * @var Collection $establishments The list of establishments
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Establishment")
+     * @Groups({"read", "write"})
      */
     private $establishments;
 
+    /**
+     * Customer constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -65,19 +71,24 @@ class Customer extends User
         $this->establishments = new ArrayCollection();
     }
 
+    /**
+     * @return null|string
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return Customer
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
-
-
 
     /**
      * @return Collection|Card[]
@@ -87,6 +98,10 @@ class Customer extends User
         return $this->cards;
     }
 
+    /**
+     * @param Card $card
+     * @return Customer
+     */
     public function addCard(Card $card): self
     {
         if (!$this->cards->contains($card)) {
@@ -96,6 +111,10 @@ class Customer extends User
         return $this;
     }
 
+    /**
+     * @param Card $card
+     * @return Customer
+     */
     public function removeCard(Card $card): self
     {
         if ($this->cards->contains($card)) {
@@ -113,6 +132,10 @@ class Customer extends User
         return $this->establishments;
     }
 
+    /**
+     * @param Establishment $establishment
+     * @return Customer
+     */
     public function addEstablishment(Establishment $establishment): self
     {
         if (!$this->establishments->contains($establishment)) {
@@ -122,6 +145,10 @@ class Customer extends User
         return $this;
     }
 
+    /**
+     * @param Establishment $establishment
+     * @return Customer
+     */
     public function removeEstablishment(Establishment $establishment): self
     {
         if ($this->establishments->contains($establishment)) {
@@ -130,6 +157,4 @@ class Customer extends User
 
         return $this;
     }
-
-
 }

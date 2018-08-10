@@ -78,12 +78,37 @@ resources:
                 method: 'GET'
                 #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/customers'
-            post: ~
-            special:
+            register:
                 method: 'POST'
                 #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
-                path: '/customers'
-                controller: 'App\Controller\CustomerSpecial'
+                path: '/customers/register'
+                controller: 'App\Controller\User\Register'
+            reset_password:
+                method: 'POST'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: '/customers/{id}/reset-password'
+                controller: 'App\Controller\User\ResetPassword'
+                swagger_context:
+                    summary: 'Reset Passord'
+                    description: 'Generation of new users password'
+                    parameters:
+                        - {in: path, name: id, required: true, identifier: true, type: string}
+                        - in: body
+                          name: 'ResetPasswordRequest'
+                          schema:
+                              type: object
+                              required:
+                                  - id
+                                  - password
+                                  - email
+                                  - token
+                              properties:
+                                  email:
+                                      type: string
+                                  password:
+                                      type: string
+                                  token:
+                                      type: string
         itemOperations:
             get:
                 method: 'GET'

@@ -2,3 +2,16 @@ api_platform:
     resource: .
     type: api_platform
     prefix: /api
+
+api_login_check:
+    path: /api/login
+
+api_customers_enable_account_request:
+    path: /api/customers/enable-account/{token}/{email}
+    methods: ['GET']
+    controller: App\Controller\User\EnableAccount::request
+
+api_customers_forgot_password_request:
+    path: /api/customers/forgot-password/{email}
+    methods: ['GET']
+    controller: App\Controller\User\ForgotPassword::request

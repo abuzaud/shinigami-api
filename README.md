@@ -50,3 +50,7 @@ docker-compose run composer php bin/console doctrine:migrations:migrate
 ```
 docker-compose run composer php bin/console doctrine:fixtures:load
 ```
+
+#### Mailtrap
+https://mailtrap.io
+Email : audrey.estiveau@me.com
