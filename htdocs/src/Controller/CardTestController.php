@@ -47,7 +47,7 @@ class CardTestController extends Controller
         dump($pdf);
 
         #return $this->render('debug/cardpdf.html.twig', [
-        return $this->render('pdf/card.html.twig', [
+        return $this->render('pdf/card2.html.twig', [
             'title' => 'Test Génération PDF carte',
             'card' => $card
         ]);
