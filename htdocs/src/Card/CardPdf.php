@@ -9,6 +9,7 @@ namespace App\Card;
 
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Snappy\Image;
 use Knp\Snappy\Pdf;
 
 /**
@@ -20,12 +21,14 @@ class CardPdf
     private $cm;
     private $em;
     private $pdfGenerator;
+    private $imageGenerator;
     private $twig;
 
     public function __construct(
         CardManager $cardManager,
         EntityManagerInterface $entityManager,
         Pdf $pdfGenerator,
+        Image $imageGenerator,
         \Twig_Environment $twig
     )
     {
@@ -35,6 +38,7 @@ class CardPdf
 
         $this->pdfGenerator = $pdfGenerator;
         $this->pdfGenerator->setOption('no-background', true);
+        $this->imageGenerator = $imageGenerator;
     }
 
 
@@ -51,25 +55,36 @@ class CardPdf
         $html = $this->renderCardHTML($card);
         dump($html);
 
-        $output = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
+        $outputPdf = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
 
-        $options = [
+        $optionsPdf = [
             'lowquality' => false,
             'page-size' => 'A4',
-            'viewport-size' => '1024x768',
+            'viewport-size' => '2480x3508',
+            'dpi' => 300,
             'enable-javascript' => true,
             'images' => true,
             'print-media-type' => true,
             'encoding' => 'UTF-8',
             'javascript-delay' => 10000,
-            'no-stop-slow-scripts' => true
+            'no-stop-slow-scripts' => true,
+            'background' => true,
         ];
 
-        $this->generate($html, $output, $options);
+        /*
+        # Configuration de la génération d'image
+        $outputImage = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.jpeg';
+        $optionsImage = [
+            'format' => 'jpeg',
+            'enable-javascript' => true,
+        ];
+        $this->generateImage($html, $outputImage, $optionsImage);
+        */
+
+        $this->generatePdf($html, $outputPdf, $optionsPdf);
 
         return $html;
     }
-
 
     /**
      * Génère un fichier PDF depuis du html
@@ -77,9 +92,20 @@ class CardPdf
      * @param $output
      * @param $options
      */
-    public function generate($html, $output, $options)
+    public function generatePdf($html, $output, $options)
     {
         $this->pdfGenerator->generateFromHtml($html, $output, $options, true);
+    }
+
+
+    /**
+     * Génère un fichier jpeg depuis du html
+     * @param $html
+     * @param $output
+     * @param $options
+     */
+    public function generateImage($html, $output, $options){
+        $this->imageGenerator->generateFromHtml($html, $output, $options, true);
     }
 
     /**
@@ -95,5 +121,4 @@ class CardPdf
             'card' => $card
         ]);
     }
-
 }
