@@ -29,7 +29,7 @@
             </td>
             <td rowspan="2" class="qrcode">
                 <div class="qrcode-container">
-                    <img src="{{ qr_code_url(datas['qrcode']) }}" alt="qrcode" />
+                    <img src="" alt="qrcode" />
                 </div>
             </td>
         </tr>
@@ -37,7 +37,7 @@
             <td class="code h4">
                 <span class="code-establishment">{{ card.establishment.codeEstablishment }}</span>&nbsp;
                 <span class="code-client">{{ card.codeCustomer }}</span>&nbsp;
-                <span class="code-checksum">{{ datas['checksum'] }}</span>
+                <span class="code-checksum"></span>
             </td>
         </tr>
     </table>
@@ -52,8 +52,8 @@
         </tr>
         <tr class="address">
             <td class="establishment">
-                <div class="address">{{ datas['address'].streetNumber ~ ' ' ~ datas['address'].streetName }}</div>
-                <div class="CP">{{ datas['address'].zipCode ~ ' '~ datas['address'].city}}</div>
+                <div class="address"></div>
+                <div class="CP"></div>
             </td>
         </tr>
         <tr class="blank">

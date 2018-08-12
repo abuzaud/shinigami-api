@@ -7,7 +7,6 @@
   -moz-border-radius: 10px;
   border-radius: 10px;
   border: 1px solid #000;
-  background-color: #bababa;
 
   &.recto{
     margin-bottom: 30px;
@@ -18,7 +17,13 @@
   }
 
   .name{
-    padding-top: 15px;
+    width: 60%;
+    padding-top:15px;
+
+    p{
+      padding: 0;
+      margin: 0;
+    }
   }
 
   .brand p{
@@ -26,15 +31,21 @@
   }
 
   .qrcode{
-    text-align: right;
+    position: relative;
+    width: 40%;
   }
 
   .qrcode-container{
-    height: 125px;
-    width: 125px;
-    border: 1px solid #000;
-    display: inline-block;
-    margin-top: 25px;
+    height: 128px;
+    width: 128px;
+    position: absolute;
+    top: 15px;
+    right: 0;
+
+    img{
+      max-width: 125px;
+      max-height: 125px;
+    }
   }
 
   .address, .cp{
@@ -43,6 +54,11 @@
 
   .loyalty, .brand{
     width: 50%;
+    padding: 0;
+  }
+
+  .code{
+    padding-top: 15px;
   }
 
   &.verso{

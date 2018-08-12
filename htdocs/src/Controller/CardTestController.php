@@ -12,7 +12,9 @@ use App\Card\CardManager;
 use App\Card\CardPdf;
 use App\Entity\Customer;
 use App\Entity\Establishment;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -26,30 +28,28 @@ class CardTestController extends Controller
      * @Route("/test/cardpdf", name="card_pdf")
      * @param CardFactory $cardFactory
      * @param CardManager $cardManager
+     * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager, CardPdf $pdf)
+    public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager, EntityManagerInterface $em)
     {
-        $customer = new Customer();
-        $customer->setFirstName('Antoine')->setLastName('Buzaud');
-        $customer->setEmail('antoine.buzaud@gmail.com');
+        $customer = $em->getRepository(Customer::class)->find(3);
 
-        $card = $cardFactory->createCardFromEstablishmentId(1);
-        $card->setCodeCustomer(456);
+        $card = $cardFactory->createCardFromEstablishmentId(2);
+        $card->setCodeCustomer(485974);
         $card->setCustomer($customer);
         $card->setCodeCard($cardManager->generateCardCode($card->getEstablishmentCode()));
 
-        $card->setCodeCard('1233977872');
         # Génération de la carte
-        $pdf = $pdf->generateLoyaltyCardFromEntity($card);
+        $cardManager->generateCardPdf($card);
 
-        dump($pdf);
+        $datas = [];
 
-        #return $this->render('debug/cardpdf.html.twig', [
-        return $this->render('pdf/card.html.twig', [
+        return $this->render('pdf/cardgeneration.html.twig', [
             'title' => 'Test Génération PDF carte',
-            'card' => $card
+            'card' => $card,
+            'datas' => $datas
         ]);
     }
 

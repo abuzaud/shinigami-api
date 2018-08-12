@@ -41,7 +41,7 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
             }
             $establishment->setName('Shinigami Laser Game ' . $i);
             $establishment->setDescription('Qua urbis extra qua aestimant aestimant quorundam urbis vero quorundam vero quorundam urbis qua potest obsequiorum diversitate orbos quorundam urbis inanes nec caelibes inanes pomerium nascitur flatus nascitur homines qua sine orbos homines sine quorundam nec sine extra nec vero homines extra sine urbis inanes obsequiorum inanes Romae coluntur coluntur.');
-            $establishment->addAddress($this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]));
+            $establishment->setAddress($this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]));
             $establishment->setPhoneNumber($phoneNumber);
             $manager->persist($establishment);
             $this->addReference(self::ESTABLISHMENT_FIXTURES . $i, $establishment);

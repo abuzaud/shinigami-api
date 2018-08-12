@@ -87,6 +87,22 @@ class CardFactory
         return $card;
     }
 
+    /**
+     * Copie de la méthode précédente mais sans les vérif en base pour l'ajout des fixtures
+     * @param Establishment $establishment
+     * @return Card|bool
+     * @throws \Exception
+     */
+    public function createFixtureCardFromEstablishment(Establishment $establishment)
+    {
+        $card = new Card();
+
+        $card->setEstablishment($establishment);
+        $card->setCodeCard($this->cm->generateCardCode($establishment->getCodeEstablishment()));
+        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
+
+        return $card;
+    }
 
     /**
      * Créé une entité Card

@@ -73,6 +73,17 @@ resources:
                                     customer:
                                         type: object
 
+            viewpdf_card:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
+                path: '/cards/pdf/{id}'
+                requirements:
+                  id: '\d+'
+                controller: 'App\Controller\Card\CardGeneratePdf'
+                swagger_context:
+                    summary: 'Génération du fichier PDF de la carte de fidélité'
+                    description: "Générer un fichier PDF de la carte de fidélité à partir de son ID"
+
         itemOperations:
             get:
                 method: 'GET'

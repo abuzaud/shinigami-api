@@ -18,21 +18,18 @@ use Knp\Snappy\Pdf;
  */
 class CardPdf
 {
-    private $cm;
     private $em;
     private $pdfGenerator;
     private $imageGenerator;
     private $twig;
 
     public function __construct(
-        CardManager $cardManager,
         EntityManagerInterface $entityManager,
         Pdf $pdfGenerator,
         Image $imageGenerator,
         \Twig_Environment $twig
     )
     {
-        $this->cm = $cardManager;
         $this->em = $entityManager;
         $this->twig = $twig;
 
@@ -45,15 +42,15 @@ class CardPdf
     /**
      * Permet de générer un pdf depuis une entité card
      * @param Card $card
+     * @param array $datas
      * @return string
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function generateLoyaltyCardFromEntity(Card $card)
+    public function generateLoyaltyCardFromEntity(Card $card, $datas = [])
     {
-        $html = $this->renderCardHTML($card);
-        dump($html);
+        $html = $this->renderCardHTML($card, $datas);
 
         $outputPdf = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
 
@@ -82,8 +79,6 @@ class CardPdf
         */
 
         $this->generatePdf($html, $outputPdf, $optionsPdf);
-
-        return $html;
     }
 
     /**
@@ -110,15 +105,17 @@ class CardPdf
 
     /**
      * @param Card $card
+     * @param $data
      * @return string
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function renderCardHTML(Card $card)
+    public function renderCardHTML(Card $card, $datas = [])
     {
         return $this->twig->render('pdf/card.html.twig', [
-            'card' => $card
+            'card' => $card,
+            'datas' => $datas
         ]);
     }
 }

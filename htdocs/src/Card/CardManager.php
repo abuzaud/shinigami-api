@@ -9,6 +9,7 @@ namespace App\Card;
 use App\Entity\Card;
 use App\Entity\Establishment;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class CardManager.
@@ -16,15 +17,21 @@ use Doctrine\ORM\EntityManagerInterface;
 class CardManager
 {
     private $em;
+    private $pdf;
+    private $router;
 
     /**
      * CardManager constructor.
      *
-     * @param $em
+     * @param EntityManagerInterface $em
+     * @param CardPdf $pdf
+     * @param UrlGeneratorInterface $router
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router)
     {
         $this->em = $em;
+        $this->pdf = $pdf;
+        $this->router = $router;
     }
 
     /**
@@ -132,7 +139,7 @@ class CardManager
      * @return string
      * @throws \Exception
      */
-    public function generateCardCode(string $codeEstablishment)
+    public function generateCardCode(string $codeEstablishment): ?string
     {
         $codeCustomer = $this->generateCustomerCode();
         $checksum = $this->generateChecksum($codeEstablishment, $codeCustomer);
@@ -141,11 +148,22 @@ class CardManager
     }
 
     /**
-     * Génère un QRCode
-     * TODO: Installer https://packagist.org/packages/endroid/qr-code-bundle et implémenter la génération des QRCode
-     * @param string $data
+     * Génère un fichier PDF de la carte de fidélité
+     * @param Card $card
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function generateQRCode(string $data){
+    public function generateCardPdf(Card $card)
+    {
+        $datas['checksum'] = substr($card->getCodeCard(),-1);
+        $datas['address'] = $card->getEstablishment()->getAddress();
+        $datas['qrcode'] = '/api/customers/'.$card->getCustomer()->getId();
+        $datas['qrcode'] = $this->router->generate(
+            'api_customers_get_item',
+            array('id' => $card->getCustomer()->getId())
+        );
 
+        $this->pdf->generateLoyaltyCardFromEntity($card, $datas);
     }
 }
