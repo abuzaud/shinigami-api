@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - apk update
-  - apk add --no-cache sqlite php7-pdo_sqlite
+  - apk add --no-cache sqlite php7-pdo_sqlite libpng libpng-dev && docker-php-ext-install gd && apk del libpng-dev
 
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
