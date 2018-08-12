@@ -13,6 +13,7 @@ use App\Card\CardManager;
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class CardGeneratePdf
 {
@@ -41,9 +42,14 @@ class CardGeneratePdf
      */
     public function __invoke($id)
     {
+        # On récupère la carte
         $cardDb = $this->em->getRepository(Card::class)->find($id);
-        $file = $this->cm->generateCardPdf($cardDb);
 
-        return (new BinaryFileResponse($file))->sendContent();
+        # On créé la réponse pour l'envoie de la carte généré en PDF
+        $fileResponse = new BinaryFileResponse($this->cm->generateCardPdf($cardDb));
+        $fileResponse->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'card.pdf');
+
+        # On envoie la réponse
+        return $fileResponse->sendContent();
     }
 }
