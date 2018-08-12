@@ -2,8 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Card\CardFactory;
-use App\Entity\Establishment;
+use App\Entity\Card;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -15,11 +14,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CardFixtures extends Fixture implements DependentFixtureInterface
 {
     public const CARD_REFERENCE = 'card-';
-    private $cf;
-
-    public function __construct(CardFactory $cf){
-        $this->cf = $cf;
-    }
 
     /**
      * @param ObjectManager $manager
@@ -28,22 +22,27 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $establishments = range(1, 3);
         $customers = range(1, 100);
-        $establishmentsId = range(1, 3);
-        $establishmentCode = range(100,200, 5);
 
         for ($i = 1; $i <= 50; $i++) {
+            shuffle($establishments);
+            $codeCustomer = '';
+            $count = 0;
+            while ($count < 6) {
+                $codeCustomer .= random_int(0, 9);
+                $count++;
+            }
             shuffle($customers);
-            shuffle($establishmentsId);
-            shuffle($establishmentCode);
 
-            $establishment = (new Establishment())->setId(intval($establishmentsId[0]));
-            $establishment->setCodeEstablishment(intval($establishmentCode[0]));
-
-            $card = $this->cf->createFixtureCardFromEstablishment($establishment);
+            $card = new Card();
+            $card->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
+            $card->setCodeCustomer($codeCustomer);
             $card->setCustomer($this->getReference(CustomerFixtures::CUSTOMER_FIXTURES . $customers[1]));
-
-            $manager->persist($establishment);
+            $codeEstablishment = $card->getEstablishment()->getCodeEstablishment();
+            $codeCustomer .= $card->getCodeCustomer();
+            $checksum = (intval($codeEstablishment) + intval($codeCustomer)) % 9;
+            $card->setCodeCard(strval($codeEstablishment . $codeCustomer . $checksum));
             $manager->persist($card);
             $this->addReference(self::CARD_REFERENCE . $i, $card);
         }
