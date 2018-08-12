@@ -52,7 +52,7 @@ class CardPdf
     {
         $html = $this->renderCardHTML($card, $datas);
 
-        $outputPdf = '../var/pdf/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
+        $outputPdf = '../public/pdf/cards/' . strval($card->getCodeCard() . '_' . time()) . '.pdf';
 
         $optionsPdf = [
             'lowquality' => false,
