@@ -150,6 +150,7 @@ class CardManager
     /**
      * Génère un fichier PDF de la carte de fidélité
      * @param Card $card
+     * @return string
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -164,6 +165,8 @@ class CardManager
             array('id' => $card->getCustomer()->getId())
         );
 
-        $this->pdf->generateLoyaltyCardFromEntity($card, $datas);
+        $file = $this->pdf->generateLoyaltyCardFromEntity($card, $datas);
+
+        return $file;
     }
 }

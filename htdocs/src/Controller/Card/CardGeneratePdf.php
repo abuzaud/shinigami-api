@@ -12,6 +12,7 @@ namespace App\Controller\Card;
 use App\Card\CardManager;
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CardGeneratePdf
 {
@@ -22,6 +23,7 @@ class CardGeneratePdf
      * CardView constructor.
      * @param CardManager $cardManager
      * @param EntityManagerInterface $entityManager
+     * @param BinaryFileResponse $fileResponse
      */
     public function __construct(CardManager $cardManager, EntityManagerInterface $entityManager)
     {
@@ -32,7 +34,7 @@ class CardGeneratePdf
     /**
      * Génère une carte image à partir de l'id de la carte
      * @param $id
-     * @return Card
+     * @return BinaryFileResponse
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -40,8 +42,8 @@ class CardGeneratePdf
     public function __invoke($id)
     {
         $cardDb = $this->em->getRepository(Card::class)->find($id);
-        $this->cm->generateCardPdf($cardDb);
+        $file = $this->cm->generateCardPdf($cardDb);
 
-        return $cardDb;
+        return (new BinaryFileResponse($file))->sendContent();
     }
 }

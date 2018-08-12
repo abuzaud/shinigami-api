@@ -78,7 +78,9 @@ class CardPdf
         $this->generateImage($html, $outputImage, $optionsImage);
         */
 
-        $this->generatePdf($html, $outputPdf, $optionsPdf);
+        $file = $this->generatePdf($html, $outputPdf, $optionsPdf);
+
+        return $outputPdf;
     }
 
     /**
@@ -89,7 +91,9 @@ class CardPdf
      */
     public function generatePdf($html, $output, $options)
     {
-        $this->pdfGenerator->generateFromHtml($html, $output, $options, true);
+        $file = $this->pdfGenerator->generateFromHtml($html, $output, $options, true);
+
+        return $file;
     }
 
 
