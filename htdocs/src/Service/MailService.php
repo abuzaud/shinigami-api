@@ -30,21 +30,24 @@ class MailService
     }
 
     /**
-     * @param string $subject
-     * @param string $email
-     * @param string $template
-     * @param array $templateData
+     * Sending an email
+     *
+     * @param string $subject The subject
+     * @param string|array $senders The sender(s)
+     * @param string|array $recipients The recipients(s)
+     * @param string $template The template used to send the email
+     * @param array $data The data passed in the template
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
      */
-    public function send(string $subject, string $email, string $template, array $templateData = []): void
+    public function send(string $subject, $senders, $recipients, string $template, array $data = []): void
     {
         $message = (new \Swift_Message($subject))
-            ->setFrom('no-reply@shinigami.com')
-            ->setTo($email)
+            ->setFrom($senders)
+            ->setTo($recipients)
             ->setBody(
-                $this->twig->render('emails/' . $template, $templateData),
+                $this->twig->render('emails/' . $template, $data),
                 'text/html'
             );
 

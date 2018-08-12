@@ -3,17 +3,16 @@
 namespace App\Customer;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Service\MailService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * Class CustomerSubscriber
+ * Class ForgotPasswordSubscriber
  * @package App\Customer
  */
-class ForgotPasswordSubscriber implements EventSubscriberInterface
+final class ForgotPasswordSubscriber implements EventSubscriberInterface
 {
     /**
      * @var CustomerManager
@@ -21,19 +20,12 @@ class ForgotPasswordSubscriber implements EventSubscriberInterface
     private $customerManager;
 
     /**
-     * @var MailService
-     */
-    private $mailService;
-
-    /**
-     * CustomerSubscriber constructor.
+     * ForgotPasswordSubscriber constructor.
      * @param CustomerManager $customerManager
-     * @param MailService $mailService
      */
-    public function __construct(CustomerManager $customerManager, MailService $mailService)
+    public function __construct(CustomerManager $customerManager)
     {
         $this->customerManager = $customerManager;
-        $this->mailService = $mailService;
     }
 
     /**
@@ -42,37 +34,26 @@ class ForgotPasswordSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => ['read', EventPriorities::POST_READ],
+            KernelEvents::VIEW => ['forgotPasswordPostValidate', EventPriorities::POST_VALIDATE],
         ];
     }
 
     /**
-     * @param GetResponseEvent $event
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @param GetResponseForControllerResultEvent $event
+     * @throws \Exception
      */
-    public function read(GetResponseEvent $event): void
+    public function forgotPasswordPostValidate(GetResponseForControllerResultEvent $event): void
     {
         $request = $event->getRequest();
 
-        if ('api_customers_forgot_password_request' !== $request->attributes->get('_route')) {
+        if ('api_forgot_password_requests_post_collection' !== $request->attributes->get('_route')) {
             return;
         }
 
-        $customer = $this->customerManager->findCustomerByEmail($event->getRequest()->get('email'));
+        $forgotPasswordRequest = $event->getControllerResult();
 
-        if ($customer) {
-            $subject = 'Réinitialiser votre mot de passe';
-            $email = $customer->getEmail();
-            $template = 'password-forgot.html.twig';
-            $templateData = [
-                'token' => $customer->getToken(),
-                'email' => $email,
-            ];
-            $this->mailService->send($subject, $email, $template, $templateData);
-        }
+        $this->customerManager->forgotPassword($forgotPasswordRequest->email);
 
-        $event->setResponse(new JsonResponse(null, 204));
+        $event->setResponse(new JsonResponse(null, 200));
     }
 }

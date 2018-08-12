@@ -21,15 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\AssociationOverride(name="addresses",
  *          joinTable=@ORM\JoinTable(
  *              name="customer_address",
- *              joinColumns=@ORM\JoinColumn(name="customer_id"),
- *              inverseJoinColumns=@ORM\JoinColumn(name="address_id")
+ *              joinColumns=@ORM\JoinColumn(name="customer_id", onDelete="CASCADE"),
+ *              inverseJoinColumns=@ORM\JoinColumn(name="address_id", onDelete="CASCADE")
  *          )
  *      ),
  *     @ORM\AssociationOverride(name="userRoles",
  *          joinTable=@ORM\JoinTable(
  *              name="customer_role",
- *              joinColumns=@ORM\JoinColumn(name="customer_id"),
- *              inverseJoinColumns=@ORM\JoinColumn(name="role_id")
+ *              joinColumns=@ORM\JoinColumn(name="customer_id", onDelete="CASCADE"),
+ *              inverseJoinColumns=@ORM\JoinColumn(name="role_id", onDelete="CASCADE")
  *          )
  *      )
  * })
@@ -39,22 +39,14 @@ class Customer extends User
     /**
      * @var string $username The username
      *
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"read", "write"})
      * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Groups({"read", "write"})
      */
     private $username;
 
     /**
-     * @var Card $cards The list of cards
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Card", mappedBy="customer")
-     * @Groups({"read", "write"})
-     */
-    private $cards;
-
-    /**
-     * @var Collection $establishments The list of establishments
+     * @var Collection|Establishment[] $establishments The list of establishments
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Establishment")
      * @Groups({"read", "write"})
@@ -62,13 +54,21 @@ class Customer extends User
     private $establishments;
 
     /**
+     * @var Collection|Card[] $cards The list of cards
+     *
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="customer", orphanRemoval=true, cascade={"persist", "remove"})
+     * @Groups({"read", "write"})
+     */
+    private $cards;
+
+    /**
      * Customer constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->cards = new ArrayCollection();
         $this->establishments = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     /**
@@ -86,40 +86,6 @@ class Customer extends User
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Card[]
-     */
-    public function getCards(): Collection
-    {
-        return $this->cards;
-    }
-
-    /**
-     * @param Card $card
-     * @return Customer
-     */
-    public function addCard(Card $card): self
-    {
-        if (!$this->cards->contains($card)) {
-            $this->cards[] = $card;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Card $card
-     * @return Customer
-     */
-    public function removeCard(Card $card): self
-    {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
-        }
 
         return $this;
     }
@@ -153,6 +119,40 @@ class Customer extends User
     {
         if ($this->establishments->contains($establishment)) {
             $this->establishments->removeElement($establishment);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    /**
+     * @param Card $card
+     * @return Customer
+     */
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Card $card
+     * @return Customer
+     */
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
         }
 
         return $this;

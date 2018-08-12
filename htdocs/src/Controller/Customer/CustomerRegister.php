@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\User;
+namespace App\Controller\Customer;
 
 use App\Customer\CustomerManager;
 use App\Entity\Customer;

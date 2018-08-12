@@ -1,0 +1,12 @@
+account_to_enable.subject: Confirmer votre inscription
+account_to_enable.content %uri%: Veuillez confirmer votre inscription en cliquant <a href="%uri%">ici</a>.
+account_enabled.subject: Bienvenue !
+account_enabled.content: Votre inscription est confirmée.
+password_to_update.subject: Votre compte a été créé
+password_to_update.email %email%: 'Votre identifiant : %email%'
+password_to_update.password %password%: 'Votre mot de passe : %password%'
+password_to_update.text: Nous vous conseillons de modifier votre mot de passe.
+password_to_reset.subject: Réinitialiser votre mot de passe
+password_to_reset.content %uri%: Veuillez confirmer la réinitialisation de votre mot de passe en cliquant <a href="%uri%">ici</a>
+password_reset.subject: Mot de passe réinitialisé
+password_reset.content: Votre mot de passe a été réinitialisé.

@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Controller\User;
+namespace App\Controller\Customer;
 
 use App\Customer\CustomerManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class RegisterController
- * @package App\Controller\User
+ * Class EnableAccount
+ * @package App\Controller\Customer
  */
-class EnableAccount extends AbstractController
+class EnableAccount
 {
     /**
      * @var CustomerManager
@@ -19,21 +18,26 @@ class EnableAccount extends AbstractController
     private $customerManager;
 
     /**
-     * CustomerSubscriber constructor.
+     * EnableAccount constructor.
      * @param CustomerManager $customerManager
      */
     public function __construct(CustomerManager $customerManager)
     {
         $this->customerManager = $customerManager;
     }
-    
-    public function request(Request $request): JsonResponse
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function __invoke(Request $request): JsonResponse
     {
-        $token = $request->get('token');
         $email = $request->get('email');
+        $token = $request->get('token');
 
         $this->customerManager->enableAccount($email, $token);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, 200);
     }
 }

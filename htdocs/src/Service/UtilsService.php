@@ -9,12 +9,14 @@ namespace App\Service;
 class UtilsService
 {
     /**
-     * @param $number
-     * @return string
+     * Generating a random string
+     *
+     * @param int $length The initial length of the string knowing that it will be multiplied by 2
+     * @return string The string generated
      * @throws \Exception
      */
-    public function generateSecureRandomString($number): string
+    public function generateRandomString(int $length): string
     {
-        return md5(random_bytes($number));
+        return bin2hex(random_bytes($length));
     }
 }

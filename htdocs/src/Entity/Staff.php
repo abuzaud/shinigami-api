@@ -21,15 +21,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\AssociationOverride(name="addresses",
  *          joinTable=@ORM\JoinTable(
  *              name="staff_address",
- *              joinColumns=@ORM\JoinColumn(name="staff_id"),
- *              inverseJoinColumns=@ORM\JoinColumn(name="address_id")
+ *              joinColumns=@ORM\JoinColumn(name="staff_id", onDelete="CASCADE"),
+ *              inverseJoinColumns=@ORM\JoinColumn(name="address_id", onDelete="CASCADE")
  *          )
  *      ),
  *     @ORM\AssociationOverride(name="userRoles",
  *          joinTable=@ORM\JoinTable(
  *              name="staff_role",
- *              joinColumns=@ORM\JoinColumn(name="user_id"),
- *              inverseJoinColumns=@ORM\JoinColumn(name="role_id")
+ *              joinColumns=@ORM\JoinColumn(name="user_id", onDelete="CASCADE"),
+ *              inverseJoinColumns=@ORM\JoinColumn(name="role_id", onDelete="CASCADE")
  *          )
  *      )
  * })
@@ -37,12 +37,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Staff extends User
 {
     /**
-     * @var Collection $establishments The list of establishments
+     * @var Collection|Establishment[] $establishments The list of establishments
      *
+     * @Assert\NotNull()
      * @ORM\ManyToMany(targetEntity="App\Entity\Establishment", inversedBy="staff")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"read", "write"})
-     * @Assert\NotNull()
      */
     private $establishments;
 
@@ -56,7 +56,7 @@ class Staff extends User
     }
 
     /**
-     * @param string $username
+     * @var string $username
      * @return Staff
      */
     public function setUsername(string $username): self

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class RoleTest extends TestCase
 {
-    public function testRoleSetRoleSemanticValue()
+    public function testSetRoleSemanticValue(): void
     {
         $value = 'customer';
         $role = new Role();

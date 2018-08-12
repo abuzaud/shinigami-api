@@ -45,42 +45,45 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $addresses = range(1, 50);
+        $addresses = range(1, 135);
         $establishments = range(1, 3);
 
-        for ($i = 1; $i <= 100; $i++) {
-            shuffle($addresses);
-            $phoneNumber = '06';
-            $count = 0;
-            while ($count < 8) {
-                $phoneNumber .= random_int(0, 9);
-                $count++;
+        $id = 1;
+
+        for ($i = 1; $i <= 3; $i++) {
+
+            for ($j = 1; $j <= 34; $j++) {
+                $phoneNumber = $this->generatePhoneNumber();
+                $token = $this->utils->generateRandomString(16);
+                $address = $this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[$id + 32]);
+                $establishment = $this->getReference(
+                    EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[$i - 1]
+                );
+                $role = $this->getReference(RoleFixtures::ROLE_REFERENCE . 'customer');
+
+                $customer = new Customer();
+                $password = $this->encoder->encodePassword($customer, 'customer_password');
+                $customer->setFirstName('Firstname ' . $id);
+                $customer->setLastName('Lastname ' . $id);
+                $customer->setUsername('username' . $id);
+                $customer->setEmail('customer' . $id . '@domain.com');
+                $customer->setPassword($password);
+                $customer->addAddress($address);
+                $customer->setPhoneNumber($phoneNumber);
+                $customer->setBirthday(new \DateTime('now'));
+                $customer->setRegistrationDate(new \DateTime('now'));
+                $customer->setIsActive(true);
+                $customer->setToken($token);
+                $customer->addUserRole($role);
+                $customer->addEstablishment($establishment);
+
+                $manager->persist($customer);
+
+                $this->addReference(self::CUSTOMER_FIXTURES . $id, $customer);
+
+                $id++;
             }
-            shuffle($establishments);
-            $token = $this->utils->generateSecureRandomString(16);
-            $address = $this->getReference(AddressFixtures::ADDRESS_REFERENCE . $addresses[1]);
-            $establishment = $this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]);
-            $role = $this->getReference(RoleFixtures::ROLE_REFERENCE . 'customer');
 
-            $customer = new Customer();
-            $password = $this->encoder->encodePassword($customer, 'customer_password');
-            $customer->setFirstName('Firstname ' . $i);
-            $customer->setLastName('Lastname ' . $i);
-            $customer->setUsername('username' . $i);
-            $customer->setEmail('customer' . $i . '@domain.com');
-            $customer->setPassword($password);
-            $customer->addAddress($address);
-            $customer->setPhoneNumber($phoneNumber);
-            $customer->setBirthday(new \DateTime('now'));
-            $customer->setRegistrationDate(new \DateTime('now'));
-            $customer->setIsActive(true);
-            $customer->setToken($token);
-            $customer->addUserRole($role);
-            $customer->addEstablishment($establishment);
-
-            $manager->persist($customer);
-
-            $this->addReference(self::CUSTOMER_FIXTURES . $i, $customer);
         }
 
         $manager->flush();
@@ -96,5 +99,21 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
             EstablishmentFixtures::class,
             RoleFixtures::class
         ];
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    private function generatePhoneNumber(): string
+    {
+        $phoneNumber = '06';
+        $count = 0;
+        while ($count < 8) {
+            $phoneNumber .= random_int(0, 9);
+            $count++;
+        }
+
+        return $phoneNumber;
     }
 }

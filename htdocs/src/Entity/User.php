@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class User implements UserInterface
+abstract class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -25,43 +24,42 @@ abstract class User implements UserInterface
     /**
      * @var string $firstName The first name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=50)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var string $lastName The last name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=50)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @var string $email The email
      *
-     * @ORM\Column(type="string", length=80, unique=true)
-     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @ORM\Column(type="string", length=80, unique=true)
+     * @Groups({"read", "write"})
      */
     private $email;
 
     /**
      * @var string $password The password
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=128)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
-     * @Assert\Length(min="8", max="20")
      */
     private $password;
 
     /**
-     * @var Collection $addresses The addresses
+     * @var Collection|Address[] $addresses The addresses
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Address")
      * @Groups({"read", "write"})
@@ -71,18 +69,18 @@ abstract class User implements UserInterface
     /**
      * @var string $phoneNumber The phone number
      *
+     * @Assert\Regex("/^\d+/")
      * @ORM\Column(type="string", length=20, nullable=true)
      * @Groups({"read", "write"})
-     * @Assert\Regex("/^\d+/")
      */
     private $phoneNumber;
 
     /**
      * @var \datetime $birthday The birthday
      *
+     * @Assert\Date()
      * @ORM\Column(type="date", nullable=true)
      * @Groups({"read", "write"})
-     * @Assert\Date()
      */
     private $birthday;
 
@@ -115,14 +113,14 @@ abstract class User implements UserInterface
     private $token;
 
     /**
-     * @var Collection $userRoles The list of roles
+     * @var Collection|Role $userRoles The list of roles
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      */
     private $userRoles;
 
     /**
-     * @var
+     * @var array $roles The list of roles for the UserInterface
      */
     private $roles;
 
@@ -136,9 +134,9 @@ abstract class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -378,6 +376,10 @@ abstract class User implements UserInterface
                 $this->roles[] = $role->getRole();
             }
         }
+        if (!\in_array('ROLE_USER', $this->roles, true)) {
+            $this->roles[] = 'ROLE_USER';
+        }
+
         return $this->roles;
     }
 
@@ -418,7 +420,7 @@ abstract class User implements UserInterface
     /**
      * @return null|string
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -428,5 +430,25 @@ abstract class User implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->isActive
+        ]);
+    }
+
+    public function unserialize($serialized): void
+    {
+        [
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->isActive
+        ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

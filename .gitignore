@@ -16,3 +16,6 @@
 
 ### Tests ###
 /htdocs/post_api_test.json
+
+### Mac ###
+.DS_Store

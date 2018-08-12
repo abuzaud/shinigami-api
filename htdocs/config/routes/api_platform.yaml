@@ -6,12 +6,12 @@ api_platform:
 api_login_check:
     path: /api/login
 
-api_customers_enable_account_request:
-    path: /api/customers/enable-account/{token}/{email}
+api_enable_account_request:
+    path: /api/customers/enable-account/{email}/{token}
     methods: ['GET']
-    controller: App\Controller\User\EnableAccount::request
+    controller: App\Controller\Customer\EnableAccount
 
-api_customers_forgot_password_request:
-    path: /api/customers/forgot-password/{email}
-    methods: ['GET']
-    controller: App\Controller\User\ForgotPassword::request
+#api_customers_reset_password_item:
+    #path: /api/customers/{id}/reset-password/{email}/{token}
+    #methods: ['GET', 'PATCH']
+    #controller: App\Controller\Customer\ResetPassword
