@@ -8,11 +8,13 @@ namespace App\Tests\Card;
 
 
 use App\Card\CardManager;
+use App\Card\CardPdf;
 use App\Entity\Card;
 use App\Entity\Establishment;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CardManagerTest extends TestCase
 {
@@ -46,9 +48,14 @@ class CardManagerTest extends TestCase
             ->method('getRepository')
             ->willReturn($cardRepository1);
 
+        # On mock le cardPDF
+        $cardPDF = $this->createMock(CardPdf::class);
+
+        # On mock UrlGeneratorInterface
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
 
         # On créé une nouvelle instance de notre classe à tester
-        $cm1 = new CardManager($em1);
+        $cm1 = new CardManager($em1, $cardPDF, $urlGeneratorInterface);
 
         # On test que le service nous renvoie bien true, car le code existe
         $codeCheck1 = $cm1->checkIfCustomerCodeExist($code);
@@ -65,7 +72,7 @@ class CardManagerTest extends TestCase
         $em2->expects($this->any())
             ->method('getRepository')
             ->willReturn($cardRepository2);
-        $cm2 = new CardManager($em2);
+        $cm2 = new CardManager($em2, $cardPDF, $urlGeneratorInterface);
 
         # On vérifie que la fonction ne trouve effectivement aucun code client
         $codeCheck2 = $cm2->checkIfCustomerCodeExist('985698');
@@ -90,7 +97,11 @@ class CardManagerTest extends TestCase
             ->method('getRepository')
             ->willReturn($repository);
 
-        $cm = new CardManager($em);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
 
         # On génére le code et on le test
         for ($i = 0; $i < 20; $i++) {
@@ -117,8 +128,12 @@ class CardManagerTest extends TestCase
             ->method('getRepository')
             ->willReturn($repository);
 
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
         # On recherche l'établissmenet
-        $cm = new CardManager($em);
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
         $findEstablishment = $cm->checkIfEstablishmentCodeExist(123);
         $this->assertSame(true, $findEstablishment);
     }
@@ -141,7 +156,11 @@ class CardManagerTest extends TestCase
             ->method('getRepository')
             ->willReturn($repository);
 
-        $cm = new CardManager($em);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
 
         # On génére le code et on le test
         for ($i = 0; $i < 20; $i++) {
@@ -167,7 +186,11 @@ class CardManagerTest extends TestCase
         $em->expects($this->any())
             ->method('getRepository')
             ->willReturn($repository);
-        $cm = new CardManager($em);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+        
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
 
         # On génére la carte et on vérifie sa structure
         for ($i = 0; $i < 50; $i++) {
@@ -180,7 +203,7 @@ class CardManagerTest extends TestCase
             $codeEstablishment = substr($code, 0, 3);
             $codeCustomer = substr($code, 3, 6);
             $supposeChecksum = intval(substr($code, -1));
-            $checksum = (intval($codeEstablishment)+intval($codeCustomer))%9;
+            $checksum = (intval($codeEstablishment) + intval($codeCustomer)) % 9;
 
             # On calcul le modulo de la carte et on vérifie avec celui déjà généré
             $this->assertSame($supposeChecksum, $checksum);
