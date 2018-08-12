@@ -44,10 +44,14 @@ class CardGeneratePdf
     {
         # On récupère la carte
         $cardDb = $this->em->getRepository(Card::class)->find($id);
+        $customer = $cardDb->getCustomer();
 
         # On créé la réponse pour l'envoie de la carte généré en PDF
         $fileResponse = new BinaryFileResponse($this->cm->generateCardPdf($cardDb));
-        $fileResponse->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'card.pdf');
+        $fileResponse->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'Shinigami Card - '.$customer->getFirstName().' '.$customer->getLastName().'.pdf'
+        );
 
         # On envoie la réponse
         return $fileResponse->sendContent();
