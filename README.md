@@ -68,3 +68,7 @@ WKHTMLTOPDF_PATH="C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
 WKHTMLTOIMAGE_PATH="C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"
 ```
 
+
+## Mailtrap
+https://mailtrap.io
+Email : audrey.estiveau@me.com

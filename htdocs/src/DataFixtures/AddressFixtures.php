@@ -58,7 +58,7 @@ class AddressFixtures extends Fixture
             ['31000', 'Toulouse']
         ];
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 135; $i++) {
             shuffle($typesStreet);
             shuffle($namesStreet);
             shuffle($citys);

@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * A role
  *
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
 class Role implements RoleHierarchyInterface
@@ -25,23 +29,26 @@ class Role implements RoleHierarchyInterface
     /**
      * @var string $name The displayed name
      *
-     * @ORM\Column(type="string", length=30)
      * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=30)
+     * @Groups({"read", "write"})
      */
     private $name;
 
     /**
      * @var string $role The role type
      *
-     * @ORM\Column(type="string", length=20, unique=true)
      * @Assert\NotBlank()
+     * @Assert\Regex("/^\w+/")
+     * @ORM\Column(type="string", length=20, unique=true)
+     * @Groups({"read", "write"})
      */
     private $role;
 
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -98,6 +105,5 @@ class Role implements RoleHierarchyInterface
      */
     public function getReachableRoles(array $roles)
     {
-
     }
 }

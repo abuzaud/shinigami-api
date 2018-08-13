@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -57,7 +56,6 @@ class Establishment
      * @var Address $address The address of the establishment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Address")
-     * @ApiSubresource()
      */
     private $address;
 
@@ -79,7 +77,6 @@ class Establishment
 
     public function __construct()
     {
-        $this->addresses = new ArrayCollection();
         $this->staff = new ArrayCollection();
     }
 
@@ -131,7 +128,7 @@ class Establishment
     }
 
     /**
-     * @return Collection|Address[]
+     * @return Address
      */
     public function getAddress(): ?Address
     {

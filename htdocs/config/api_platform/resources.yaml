@@ -121,20 +121,60 @@ resources:
                     description: "Permet de supprimer une carte de fidélité à partir de son id"
 
     App\Entity\Customer:
-        attributes:
-            normalization_context: {groups: ['read']}
-            denormalization_context: {groups: ['write']}
+        #attributes:
+            #normalization_context: {groups: ['read']}
+            #denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
                 #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/customers'
-            post: ~
-            special:
+                swagger_context:
+                    summary: 'Retrieves the list of customers.'
+            register:
                 method: 'POST'
                 #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
-                path: '/customers'
-                controller: 'App\Controller\CustomerSpecial'
+                path: '/customers/register'
+                controller: 'App\Controller\Customer\CustomerRegister'
+                swagger_context:
+                    summary: 'Register a customer.'
+                    parameters:
+                      - in: body
+                        name: 'customer'
+                        description: 'The new customer'
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                    example: "John"
+                                lastName:
+                                    type: string
+                                    example: "Doe"
+                                username:
+                                    type: string
+                                    example: "JDoe24"
+                                email:
+                                    type: string
+                                    example: "john.doe@domain.com"
+                                password:
+                                    type: string
+                                    example: "4tNg2qB2"
+                                birthday:
+                                    #type: string
+                                    example: '1990-08-24'
+                                addresses:
+                                    type: object
+                                    example: ["/api/addresses/1"]
+                                phoneNumber:
+                                    type: string
+                                    example: '0692571843'
+                                establishments:
+                                    type: object
+                                    example: ["/api/establishments/1"]
+                                cards:
+                                    type: object
+                                    example: ["/api/cards/1"]
         itemOperations:
             get:
                 method: 'GET'
@@ -142,23 +182,119 @@ resources:
                 path: '/customers/{id}'
                 requirements:
                     id: '\d+'
+                swagger_context:
+                    summary: 'Retrieves a customer.'
             put:
                 method: 'PUT'
                 #access_control: 'is_granted("ROLE_CUSTOMER")'
                 path: '/customers/{id}'
                 requirements:
                     id: '\d+'
+                swagger_context:
+                    summary: 'Update the customer.'
+                    parameters:
+                      - {in: path, name: id, identifier: true, required: true, type: string}
+                      - in: body
+                        name: 'customer'
+                        description: 'The updated customer'
+                        schema:
+                            type: object
+                            required:
+                              - firstName
+                              - lastName
+                              - username
+                              - email
+                              - password
+                            properties:
+                                firstName:
+                                    type: string
+                                    example: "John"
+                                lastName:
+                                    type: string
+                                    example: "Doe"
+                                username:
+                                    type: string
+                                    example: "JDoe24"
+                                email:
+                                    type: string
+                                    example: "john.doe@domain.com"
+                                password:
+                                    type: string
+                                    example: "4tNg2qB2"
+                                birthday:
+                                    type: string
+                                    example: '1990-08-24'
+                                address:
+                                    type: string
+                                    example: [
+                                                {
+                                                    "streetNumber": "string",
+                                                    "streetName": "string",
+                                                    "complement": "string",
+                                                    "zipCode": "string",
+                                                    "city": "string",
+                                                    "country": "string",
+                                                }
+                                             ]
+                                addresses:
+                                    type: class
+                                    example: ["/api/addresses/1"]
+                                phoneNumber:
+                                    type: string
+                                    example: '0692571843'
+                                establishments:
+                                    type: object
+                                    example: ["/api/establishments/1"]
+                                cards:
+                                    type: object
+                                    example: ["/api/cards/1"]
             delete:
                 method: 'DELETE'
                 #access_control: 'is_granted("ROLE_CUSTOMER")'
                 path: '/customers/{id}'
                 requirements:
                     id: '\d+'
+                swagger_context:
+                    summary: 'Delete the customer.'
+            reset_password:
+                method: 'PATCH'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: '/customers/{id}/reset-password/{email}/{token}'
+                controller: 'App\Controller\Customer\ResetPassword'
+                swagger_context:
+                    summary: 'Replaces the password (forgotten).'
+                    parameters:
+                        - {in: path, name: id, identifier: true, required: true, type: string}
+                        - {in: path, name: email, required: true, type: string}
+                        - {in: path, name: token, required: true, type: string}
+                        - in: body
+                          name: 'reset password'
+                          schema:
+                              type: object
+                              properties:
+                                  password:
+                                      type: string
+                                      example: "string(8-20)"
+            #enable_account:
+                #method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                #path: '/customers/enable-account/{email}/{token}'
+                #controller: 'App\Controller\Customer\EnableAccount'
+                #swagger_context:
+                    #summary: 'Enabling the account.'
+                    #parameters:
+                        #- {in: path, name: id, , required: true, type: string}
+                        #- {in: path, name: email, identifier: true, required: true, type: string}
+                        #- {in: path, name: token, required: true, type: string}
+                        #- in: body
+                          #name: 'enable account'
+                          #schema:
+                              #type: object
 
     App\Entity\Establishment:
-        attributes:
-            normalization_context: {groups: ['read']}
-            denormalization_context: {groups: ['write']}
+        #attributes:
+            #normalization_context: {groups: ['read']}
+            #denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
@@ -234,10 +370,44 @@ resources:
                 method: 'GET'
                 #access_control: 'is_granted("ROLE_ADMIN")'
                 path: '/staff'
-            post:
+            register:
                 method: 'POST'
                 #access_control: 'is_granted("ROLE_ADMIN")'
-                path: '/staff'
+                path: '/staff/register'
+                controller: 'App\Controller\Staff\StaffRegister'
+                swagger_context:
+                    summary: 'Register a staff user.'
+                    parameters:
+                      - in: body
+                        name: 'staff user'
+                        description: 'The new staff user'
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                    example: "John"
+                                lastName:
+                                    type: string
+                                    example: "Doe"
+                                email:
+                                    type: string
+                                    example: "john.doe@domain.com"
+                                password:
+                                    type: string
+                                    example: "4tNg2qB2"
+                                birthday:
+                                    #type: string
+                                    example: '1990-08-24'
+                                addresses:
+                                    type: object
+                                    example: ["/api/addresses/1"]
+                                phoneNumber:
+                                    type: string
+                                    example: '0692571843'
+                                establishments:
+                                    type: object
+                                    example: ["/api/establishments/1"]
         itemOperations:
             get:
                 method: 'GET'

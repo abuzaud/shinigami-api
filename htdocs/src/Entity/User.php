@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class User implements UserInterface
+abstract class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -25,66 +24,63 @@ abstract class User implements UserInterface
     /**
      * @var string $firstName The first name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=50)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @var string $lastName The last name
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=50)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      */
     private $lastName;
 
     /**
      * @var string $email The email
      *
-     * @ORM\Column(type="string", length=80, unique=true)
-     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      * @Assert\Email()
+     * @ORM\Column(type="string", length=80, unique=true)
+     * @Groups({"read", "write"})
      */
     private $email;
 
     /**
      * @var string $password The password
      *
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=128)
      * @Groups({"read", "write"})
-     * @Assert\NotBlank()
-     * @Assert\Length(min="8", max="20")
      */
     private $password;
 
     /**
-     * @var Collection $addresses The addresses
+     * @var Collection|Address[] $addresses The addresses
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Address")
-     * @ApiSubresource()
+     * @Groups({"read", "write"})
      */
     private $addresses;
 
     /**
      * @var string $phoneNumber The phone number
      *
-     * @ORM\Column(type="string", length=20)
-     * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      * @Assert\Regex("/^\d+/")
+     * @ORM\Column(type="string", length=20, nullable=true)
+     * @Groups({"read", "write"})
      */
     private $phoneNumber;
 
     /**
      * @var \datetime $birthday The birthday
      *
-     * @ORM\Column(type="date")
-     * @Groups({"read", "write"})
-     * @Assert\NotBlank()
      * @Assert\Date()
+     * @ORM\Column(type="date", nullable=true)
+     * @Groups({"read", "write"})
      */
     private $birthday;
 
@@ -117,31 +113,46 @@ abstract class User implements UserInterface
     private $token;
 
     /**
-     * @var Collection $userRoles The list of roles
+     * @var Collection|Role $userRoles The list of roles
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", cascade={"persist"})
-     * @Groups({"read", "write"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      */
     private $userRoles;
 
+    /**
+     * @var array $roles The list of roles for the UserInterface
+     */
     private $roles;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string $firstName
+     * @return User
+     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -149,11 +160,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string $lastName
+     * @return User
+     */
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
@@ -161,11 +179,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return User
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -173,11 +198,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -193,6 +225,10 @@ abstract class User implements UserInterface
         return $this->addresses;
     }
 
+    /**
+     * @param Address $address
+     * @return User
+     */
     public function addAddress(Address $address): self
     {
         if (!$this->addresses->contains($address)) {
@@ -202,6 +238,10 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Address $address
+     * @return User
+     */
     public function removeAddress(Address $address): self
     {
         if ($this->addresses->contains($address)) {
@@ -211,11 +251,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
 
+    /**
+     * @param string $phoneNumber
+     * @return User
+     */
     public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
@@ -223,11 +270,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getBirthday(): ?\DateTimeInterface
     {
         return $this->birthday;
     }
 
+    /**
+     * @param \DateTimeInterface $birthday
+     * @return User
+     */
     public function setBirthday(\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
@@ -235,11 +289,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getRegistrationDate(): ?\DateTimeInterface
     {
         return $this->registrationDate;
     }
 
+    /**
+     * @param \DateTimeInterface $registrationDate
+     * @return User
+     */
     public function setRegistrationDate(\DateTimeInterface $registrationDate): self
     {
         $this->registrationDate = $registrationDate;
@@ -247,11 +308,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getLastConnectionDate(): ?\DateTimeInterface
     {
         return $this->lastConnectionDate;
     }
 
+    /**
+     * @param \DateTimeInterface|null $lastConnectionDate
+     * @return User
+     */
     public function setLastConnectionDate(?\DateTimeInterface $lastConnectionDate): self
     {
         $this->lastConnectionDate = $lastConnectionDate;
@@ -259,11 +327,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
 
+    /**
+     * @param bool $isActive
+     * @return User
+     */
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
@@ -271,11 +346,18 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getToken(): ?string
     {
         return $this->token;
     }
 
+    /**
+     * @param string $token
+     * @return User
+     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -283,22 +365,22 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getRoles(): array
     {
         $this->roles = [];
-        /*if (!\in_array('ROLE_USER', $this->roles, true)) {
-            $this->roles[] = 'ROLE_USER';
-        }*/
         foreach ($this->userRoles->toArray() as $role) {
             if (!\in_array($role, $this->roles, true)) {
                 $this->roles[] = $role->getRole();
             }
         }
-        return $this->roles;
+        if (!\in_array('ROLE_USER', $this->roles, true)) {
+            $this->roles[] = 'ROLE_USER';
+        }
 
-        /*return [
-            'ROLE_USER'
-        ];*/
+        return $this->roles;
     }
 
     /**
@@ -309,6 +391,10 @@ abstract class User implements UserInterface
         return $this->userRoles;
     }
 
+    /**
+     * @param Role $role
+     * @return User
+     */
     public function addUserRole(Role $role): self
     {
         if (!$this->userRoles->contains($role)) {
@@ -318,6 +404,10 @@ abstract class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Role $role
+     * @return User
+     */
     public function removeUserRole(Role $role): self
     {
         if ($this->userRoles->contains($role)) {
@@ -330,7 +420,7 @@ abstract class User implements UserInterface
     /**
      * @return null|string
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -340,5 +430,25 @@ abstract class User implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->isActive
+        ]);
+    }
+
+    public function unserialize($serialized): void
+    {
+        [
+            $this->id,
+            $this->email,
+            $this->password,
+            $this->isActive
+        ] = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

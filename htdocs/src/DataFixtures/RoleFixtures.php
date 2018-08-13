@@ -21,7 +21,7 @@ class RoleFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $role = new Role();
-        $role->setName('Customer');
+        $role->setName('Client');
         $role->setRole('ROLE_CUSTOMER');
         $manager->persist($role);
         $this->addReference(self::ROLE_REFERENCE . 'customer', $role);
