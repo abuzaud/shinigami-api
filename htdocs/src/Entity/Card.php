@@ -24,26 +24,11 @@ class Card
     private $id;
 
     /**
-     * @var Establishment $establishment The establishment code
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $establishment;
-
-    /**
      * @var string $codeCustomer The customer loyalty code
      *
      * @ORM\Column(type="string", length=6, unique=true)
      */
     private $codeCustomer;
-
-    /**
-     * @var string $checksum The checksum = (establishment code + customer loyalty code) % 9
-     *
-     * @ORM\Column(type="string", length=1)
-     */
-    private $checksum;
 
     /**
      * @var string $codeCard The establishment code, the customer loyalty code and the checksum
@@ -71,6 +56,14 @@ class Card
      * @ORM\Column(type="integer", nullable=true)
      */
     private $points;
+
+    /**
+     * @var Establishment $establishment The establishment code
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Establishment")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $establishment;
 
     public function __construct()
     {
@@ -102,18 +95,6 @@ class Card
     public function setCodeCustomer(int $codeCustomer): self
     {
         $this->codeCustomer = $codeCustomer;
-
-        return $this;
-    }
-
-    public function getChecksum(): ?int
-    {
-        return $this->checksum;
-    }
-
-    public function setChecksum(int $checksum): self
-    {
-        $this->checksum = $checksum;
 
         return $this;
     }
@@ -183,5 +164,9 @@ class Card
         $this->points = $points;
 
         return $this;
+    }
+
+    public function getEstablishmentCode(){
+        return $this->establishment->getCodeEstablishment();
     }
 }

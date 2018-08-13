@@ -54,12 +54,12 @@ class Establishment
     private $description;
 
     /**
-     * @var Collection $addresses The addresses
+     * @var Address $address The address of the establishment
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Address")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
      * @ApiSubresource()
      */
-    private $addresses;
+    private $address;
 
     /**
      * @var string $phoneNumber The phone number
@@ -86,6 +86,13 @@ class Establishment
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCodeEstablishment(): ?int
@@ -126,25 +133,14 @@ class Establishment
     /**
      * @return Collection|Address[]
      */
-    public function getAddresses(): Collection
+    public function getAddress(): ?Address
     {
-        return $this->addresses;
+        return $this->address;
     }
 
-    public function addAddress(Address $address): self
+    public function setAddress(Address $address): self
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses[] = $address;
-        }
-
-        return $this;
-    }
-
-    public function removeAddress(Address $address): self
-    {
-        if ($this->addresses->contains($address)) {
-            $this->addresses->removeElement($address);
-        }
+        $this->address = $address;
 
         return $this;
     }

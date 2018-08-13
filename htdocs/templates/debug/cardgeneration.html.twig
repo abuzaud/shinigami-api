@@ -1,5 +1,10 @@
 {% extends 'layout.html.twig' %}
 {% block layout %}
-    <h1>Test Génération de carte</h1>
+    <h1>{{ title }}</h1>
 
+    <ul>
+    {% for data in datas %}
+        {{ data }}
+    {% endfor %}
+    </ul>
 {% endblock %}

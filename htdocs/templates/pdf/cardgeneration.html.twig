@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="{{ absolute_url(asset('css/bootstrap.min.css')) }}" rel="stylesheet"/>
+    <link href="{{ absolute_url(asset('css/card.css')) }}" rel="stylesheet"/>
+</head>
+<body>
+<div class="card recto">
+    <table>
+        <tr class="top">
+            <td class="loyalty">
+                <p class="h3">Carte de</p>
+                <p class="h3 text-uppercase">Fidélité</p>
+            </td>
+            <td class="brand">
+                <p class="h3 text-uppercase">
+                    Shinigami
+                </p>
+                <p class="h3">
+                    Laser Game
+                </p>
+            </td>
+        </tr>
+        <tr class="bottom">
+            <td class="name h5">
+                <p class="firstname">{{ card.customer.firstName }}</p>
+                <p class="lastname text-uppercase">{{ card.customer.lastName }}</p>
+            </td>
+            <td rowspan="2" class="qrcode">
+                <div class="qrcode-container">
+                    <img src="" alt="qrcode" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="code h4">
+                <span class="code-establishment">{{ card.establishment.codeEstablishment }}</span>&nbsp;
+                <span class="code-client">{{ card.codeCustomer }}</span>&nbsp;
+                <span class="code-checksum"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="card verso">
+    <table>
+        <tr class="top">
+            <td>
+                <div class="magnetic"></div>
+            </td>
+        </tr>
+        <tr class="address">
+            <td class="establishment">
+                <div class="address"></div>
+                <div class="CP"></div>
+            </td>
+        </tr>
+        <tr class="blank">
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="signature-container">
+            <td>
+                Signature du titulaire obligatoire
+                <div class="signature"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

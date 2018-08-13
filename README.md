@@ -50,3 +50,21 @@ docker-compose run composer php bin/console doctrine:migrations:migrate
 ```
 docker-compose run composer php bin/console doctrine:fixtures:load
 ```
+
+
+## Generation des pdf
+1. Installer le programme WkHtmlToPdf (https://wkhtmltopdf.org/downloads.html)
+2. Mettre en place les variables `WKHTMLTOPDF_PATH` et `WKHTMLTOIMAGE_PATH` suivant l'OS
+
+Linux
+```
+WKHTMLTOPDF_PATH=/usr/local/bin/wkhtmltopdf
+WKHTMLTOIMAGE_PATH=/usr/local/bin/wkhtmltoimage
+```
+
+Windows
+```
+WKHTMLTOPDF_PATH="C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+WKHTMLTOIMAGE_PATH="C:\Program Files\wkhtmltopdf\bin\wkhtmltoimage.exe"
+```
+
