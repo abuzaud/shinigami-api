@@ -1,2 +1,37 @@
 framework:
-    workflows: ~
+    workflows:
+        loyalty_card:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'multiple_state'
+                arguments:
+                    - 'state'
+            supports:
+                - App\Entity\Card
+
+            initial_place: blank
+            places:
+                - blank
+                - deactivated
+                - code_created
+                - activated
+                - printed
+                - deleted
+            transitions:
+                create_code:
+                    from: blank
+                    to: [code_created, deactivated]
+                print:
+                    from: code_created
+                    to: printed
+                activate:
+                    from: [code_created, deactivated]
+                    to: [activated]
+                deactivate:
+                    from: activated
+                    to: deactivated
+                delete:
+                    from: deactivated
+                    to: deleted

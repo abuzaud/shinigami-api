@@ -65,6 +65,8 @@ class Card
      */
     private $establishment;
 
+    public $state;
+
     public function __construct()
     {
         $this->visits = new ArrayCollection();
