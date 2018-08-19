@@ -7,6 +7,7 @@
 namespace App\Tests\Card;
 
 
+use App\Card\CardFactory;
 use App\Card\CardManager;
 use App\Card\CardPdf;
 use App\Entity\Card;
@@ -241,4 +242,78 @@ class CardManagerTest extends TestCase
             $this->assertSame($supposeChecksum, $checksum);
         }
     }
+
+    /*
+    public function testSetCardCode()
+    {
+        #Mock du repository
+        $repository = $this->createMock(ObjectRepository::class);
+        $repository->expects($this->any())
+            ->method('findby')
+            ->willReturn(null);
+
+        # Mock du EntityManager
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($repository);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
+        $cf = new CardFactory($cm, $em);
+
+        $code = $cm->generateCardCode(123);
+        $establishment = new Establishment();
+        $establishment->setCodeEstablishment(123)->setId(1);
+        $card = $cf->createFixtureCardFromEstablishment($establishment);
+
+        $this->assertEmpty($card->getCustomer());
+        $cm->setCardCode($card, $establishment);
+    }
+
+    public function testSetCardCustomer()
+    {
+    }
+
+    public function testDeactivateCard()
+    {
+        #Mock du repository
+        $repository = $this->createMock(ObjectRepository::class);
+        $repository->expects($this->any())
+            ->method('findby')
+            ->willReturn(null);
+
+        # Mock du EntityManager
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($repository);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('can')
+            ->willReturn(true)
+            ->method('apply')
+            ->willReturn(true);
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
+
+        $card = new Card;
+        $card->setState(['activated', 'code_created']);
+        $this->assertSame(['activated', 'code_created'], $card->getState());
+
+        $cm->deactivateCard($card);
+        $this->assertSame(['deactivated', 'code_created'], $card->getState());
+
+    }/**/
 }
