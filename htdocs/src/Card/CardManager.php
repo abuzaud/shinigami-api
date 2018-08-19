@@ -7,9 +7,13 @@
 namespace App\Card;
 
 use App\Entity\Card;
+use App\Entity\Customer;
 use App\Entity\Establishment;
+use App\Exception\CardException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Workflow\Exception\TransitionException;
+use Symfony\Component\Workflow\Registry;
 
 /**
  * Class CardManager.
@@ -19,6 +23,7 @@ class CardManager
     private $em;
     private $pdf;
     private $router;
+    private $workflow;
 
     /**
      * CardManager constructor.
@@ -26,12 +31,14 @@ class CardManager
      * @param EntityManagerInterface $em
      * @param CardPdf $pdf
      * @param UrlGeneratorInterface $router
+     * @param Registry $registry
      */
-    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router)
+    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router, Registry $registry)
     {
         $this->em = $em;
         $this->pdf = $pdf;
         $this->router = $router;
+        $this->workflow = $registry;
     }
 
     /**
@@ -70,11 +77,10 @@ class CardManager
         // On vérifie si le code existe en base
         if (!$this->checkIfCustomerCodeExist(implode($code))) {
             return implode($code);
-        } else {
-            $this->generateCustomerCode();
         }
 
-        return false;
+        return $this->generateCustomerCode();
+
     }
 
     /**
@@ -157,9 +163,9 @@ class CardManager
      */
     public function generateCardPdf(Card $card)
     {
-        $datas['checksum'] = substr($card->getCodeCard(),-1);
+        $datas['checksum'] = substr($card->getCodeCard(), -1);
         $datas['address'] = $card->getEstablishment()->getAddress();
-        $datas['qrcode'] = '/api/customers/'.$card->getCustomer()->getId();
+        $datas['qrcode'] = '/api/customers/' . $card->getCustomer()->getId();
         $datas['qrcode'] = $this->router->generate(
             'api_customers_get_item',
             array('id' => $card->getCustomer()->getId())
@@ -169,4 +175,88 @@ class CardManager
 
         return $file;
     }
+
+    /**
+     * Génère le code de la carte
+     * @param Card $card
+     * @param Establishment $establishment
+     * @return Card|null
+     * @throws \Exception
+     */
+    public function setCardCode(Card $card, Establishment $establishment): ?Card
+    {
+        $workflow = $this->workflow->get($card, 'loyalty_card');
+
+        $card->setEstablishment($establishment);
+        $card->setCodeCard($this->generateCardCode($establishment->getCodeEstablishment()));
+        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
+
+        if ($workflow->can($card, 'create_code')) {
+            $workflow->apply($card, 'create_code');
+        }
+
+        return $card;
+    }
+
+    /**
+     * Permet de modifier le client d'une carte de fidélité
+     * @param Card $card
+     * @param Customer $customer
+     * @return Card
+     */
+    public function setCardCustomer(Card $card, Customer $customer)
+    {
+        if ($card->getCustomer() instanceof Customer) {
+            throw new CardException('Cette carte appartient déjà à un client : id[' . $customer->getId() . ']');
+
+            return false;
+        }
+
+        # Si la carte ne possède pas de code
+        if (empty($card->getCodeCard())) {
+            throw new CardException('La carte ne possède pas de code');
+            return false;
+        }
+
+        # Si le numéro de la carte est incorrecte
+        if (strlen($card->getCodeCard()) !== 10) {
+            throw new CardException('The card\'s code is incorrect');
+            return false;
+        }
+
+        try {
+            $card->setCustomer($customer);
+        } catch (CardException $exception) {
+            echo '[' . $exception->getCode() . '] ' . $exception->getMessage();
+        }
+
+        # On récupère le workflow de la carte
+        $workflow = $this->workflow->get($card, 'loyalty_card');
+
+        # On change l'état de la carte
+        if ($workflow->can($card, 'activate')) {
+            $workflow->apply($card, 'activate');
+        }
+
+        return $card;
+    }
+
+    /**
+     * Permet de désactiver une carte
+     * @param Card $card
+     * @return Card
+     */
+    public function deactivateCard(Card $card): Card
+    {
+        $workflow = $this->workflow->get($card, 'loyalty_card');
+
+        $card->desactivateCard();
+
+        if ($workflow->can($card, 'deactivate')) {
+            $workflow->apply($card, 'deactivate');
+        }
+
+        return $card;
+    }
 }
+

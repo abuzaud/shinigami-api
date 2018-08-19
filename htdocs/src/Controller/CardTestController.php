@@ -35,11 +35,11 @@ class CardTestController extends Controller
     public function testCardPdf(CardFactory $cardFactory, CardManager $cardManager, EntityManagerInterface $em)
     {
         $customer = $em->getRepository(Customer::class)->find(3);
+        $establishment = $em->getRepository(Establishment::class)->find(1);
 
-        $card = $cardFactory->createCardFromEstablishmentId(2);
-        $card->setCodeCustomer(485974);
-        $card->setCustomer($customer);
+        $card = $cardFactory->createCardFromEstablishment($establishment);
         $card->setCodeCard($cardManager->generateCardCode($card->getEstablishmentCode()));
+        $card->setCustomer($customer);
 
         # Génération de la carte
         $cardManager->generateCardPdf($card);
@@ -57,22 +57,19 @@ class CardTestController extends Controller
      * @Route("/test/cardgeneration", name="card_generation")
      * @param CardManager $cm
      * @param CardFactory $cardFactory
+     * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function testCardGeneration(CardManager $cm, CardFactory $cardFactory)
+    public function testCardGeneration(CardManager $cm, CardFactory $cardFactory, EntityManagerInterface $em)
     {
         $establishment = new Establishment();
         $establishment->setCodeEstablishment(123);
         $establishment->setName('Lycée Buffon');
         $establishment->setDescription('Prout');
 
-        $card = $cardFactory->createCardFromEstablishmentCode(123);
+        $card = $cardFactory->createCardFromEstablishment($establishment);
         $card->setEstablishment($establishment);
-
-
-        dump($card);
-        dump($establishment);
 
         # Sérializer pour les entités
         $encoders = array(new XmlEncoder(), new JsonEncoder());
@@ -81,6 +78,12 @@ class CardTestController extends Controller
 
         $jsonEstablishment = $serializer->serialize($establishment, 'json');
         $jsonCard = $serializer->serialize($card, 'json');
+
+        $customer = $em->getRepository(Customer::class)->find(1);
+
+        dump($card);
+        $cm->setCardCustomer($card, $customer);
+        dump($card);
 
         $datas = [];
         $datas[] = $jsonEstablishment;

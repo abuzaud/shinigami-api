@@ -27,8 +27,8 @@ framework:
                     from: code_created
                     to: printed
                 activate:
-                    from: [code_created, deactivated]
-                    to: [activated]
+                    from: deactivated
+                    to: activated
                 deactivate:
                     from: activated
                     to: deactivated

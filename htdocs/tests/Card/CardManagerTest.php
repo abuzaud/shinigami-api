@@ -15,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Workflow\Registry;
 
 class CardManagerTest extends TestCase
 {
@@ -54,8 +55,14 @@ class CardManagerTest extends TestCase
         # On mock UrlGeneratorInterface
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
 
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+
         # On créé une nouvelle instance de notre classe à tester
-        $cm1 = new CardManager($em1, $cardPDF, $urlGeneratorInterface);
+        $cm1 = new CardManager($em1, $cardPDF, $urlGeneratorInterface, $workflow);
 
         # On test que le service nous renvoie bien true, car le code existe
         $codeCheck1 = $cm1->checkIfCustomerCodeExist($code);
@@ -72,7 +79,8 @@ class CardManagerTest extends TestCase
         $em2->expects($this->any())
             ->method('getRepository')
             ->willReturn($cardRepository2);
-        $cm2 = new CardManager($em2, $cardPDF, $urlGeneratorInterface);
+
+        $cm2 = new CardManager($em2, $cardPDF, $urlGeneratorInterface, $workflow);
 
         # On vérifie que la fonction ne trouve effectivement aucun code client
         $codeCheck2 = $cm2->checkIfCustomerCodeExist('985698');
@@ -101,7 +109,13 @@ class CardManagerTest extends TestCase
         $cardPDF = $this->createMock(CardPdf::class);
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
 
-        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
 
         # On génére le code et on le test
         for ($i = 0; $i < 20; $i++) {
@@ -132,8 +146,14 @@ class CardManagerTest extends TestCase
         $cardPDF = $this->createMock(CardPdf::class);
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
 
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+
         # On recherche l'établissmenet
-        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
         $findEstablishment = $cm->checkIfEstablishmentCodeExist(123);
         $this->assertSame(true, $findEstablishment);
     }
@@ -160,7 +180,13 @@ class CardManagerTest extends TestCase
         $cardPDF = $this->createMock(CardPdf::class);
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
 
-        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
 
         # On génére le code et on le test
         for ($i = 0; $i < 20; $i++) {
@@ -189,8 +215,14 @@ class CardManagerTest extends TestCase
         # On mock le cardPDF et UrlGeneratorInterface
         $cardPDF = $this->createMock(CardPdf::class);
         $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
-        
-        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface);
+
+        # On mock le workflow
+        $workflow = $this->createMock(Registry::class);
+        $workflow->expects($this->any())
+            ->method('get')
+            ->willReturn(Registry::class);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
 
         # On génére la carte et on vérifie sa structure
         for ($i = 0; $i < 50; $i++) {

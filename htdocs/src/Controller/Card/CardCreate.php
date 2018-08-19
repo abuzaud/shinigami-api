@@ -30,11 +30,11 @@ class CardCreate
     public function __invoke(Card $data): Card
     {
         # Récupération du code de l'établissement
-        $codeEstablishment = $data->getEstablishmentCode();
+        $establishment = $data->getEstablishment();
 
         # Création de la carte à partir du code de l'établissement
         try {
-            $data = $this->cf->createCardFromEstablishmentCode($codeEstablishment);
+            $data = $this->cf->createCardFromEstablishment($establishment);
         } catch (\Exception $e) {
             echo "Une exception a été levé dans le fichier [".$e->getFile()."][ligne : ".$e->getLine()."].".PHP_EOL;
             echo $e->getMessage().PHP_EOL.$e->getCode().PHP_EOL;
