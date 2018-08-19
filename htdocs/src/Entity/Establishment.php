@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,6 +34,7 @@ class Establishment
      * @ORM\Column(type="string", length=3, unique=true)
      * @Assert\NotBlank()
      * @Assert\Regex("/^\d+/")
+     * @Groups({"read", "write"})
      */
     private $codeEstablishment;
 
@@ -41,6 +43,7 @@ class Establishment
      *
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
+     * @Groups({"read", "write"})
      */
     private $name;
 
@@ -49,6 +52,7 @@ class Establishment
      *
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
+     * @Groups({"read", "write"})
      */
     private $description;
 
@@ -56,6 +60,7 @@ class Establishment
      * @var Address $address The address of the establishment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Address")
+     * @Groups({"read", "write"})
      */
     private $address;
 
@@ -64,6 +69,7 @@ class Establishment
      *
      * @ORM\Column(type="string", length=20)
      * @Assert\Regex("/^\d+/")
+     * @Groups({"read", "write"})
      */
     private $phoneNumber;
 
