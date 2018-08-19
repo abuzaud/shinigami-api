@@ -37,12 +37,11 @@ class CardFixtures extends Fixture implements DependentFixtureInterface
 
             $card = new Card();
             $card->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_FIXTURES . $establishments[1]));
-            $card->setCodeCustomer($codeCustomer);
-            $card->setCustomer($this->getReference(CustomerFixtures::CUSTOMER_FIXTURES . $customers[1]));
             $codeEstablishment = $card->getEstablishment()->getCodeEstablishment();
-            $codeCustomer .= $card->getCodeCustomer();
             $checksum = (intval($codeEstablishment) + intval($codeCustomer)) % 9;
-            $card->setCodeCard(strval($codeEstablishment . $codeCustomer . $checksum));
+            $card->setCodeCard(substr(strval($codeEstablishment . $codeCustomer . $checksum), 0, 10));
+            $card->setCustomer($this->getReference(CustomerFixtures::CUSTOMER_FIXTURES . $customers[1]));
+            $card->setState(['activated']);
             $manager->persist($card);
             $this->addReference(self::CARD_REFERENCE . $i, $card);
         }

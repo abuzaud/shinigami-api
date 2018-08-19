@@ -9,7 +9,9 @@ namespace App\Card;
 
 use App\Entity\Card;
 use App\Entity\Establishment;
+use App\Exception\CardException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Workflow\Registry;
 
 /**
  * Class CardFactory
@@ -34,55 +36,23 @@ class CardFactory
     /**
      * Créé une carte de fidélité depuis un code d'établissement
      * Prend en paramètre un code d'établissement
-     * @param $codeEstablishment
+     * @param Establishment $establishment
      * @return Card|false
      * @throws \Exception
      */
-    public function createCardFromEstablishmentCode($codeEstablishment)
+    public function createCardFromEstablishment(Establishment $establishment)
     {
         # On vérifie que l'établissement existe bien
-        if (!$this->cm->checkIfEstablishmentCodeExist($codeEstablishment)) {
+        if (!$this->cm->checkIfEstablishmentCodeExist($establishment->getCodeEstablishment())) {
+            throw new CardException("L'établissement n'existe pas");
             return false;
         }
 
         # On créé l'entité
         $card = new Card();
 
-        # On récupère l'établissement
-        $establishment = $this->em->getRepository(Establishment::class)
-            ->findOneBy([
-                'codeEstablishment' => $codeEstablishment
-            ]);
-        $card->setEstablishment($establishment);
-
-        # On génère les codes de la carte
-        $card->setCodeCard($this->cm->generateCardCode($codeEstablishment));
-        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
-
-        return $card;
-    }
-
-
-    /**
-     * Créé une carte de fidélité depuis un id d'établissement
-     * @param int $id
-     * @return Card|bool
-     * @throws \Exception
-     */
-    public function createCardFromEstablishmentId(int $id)
-    {
-        $establishment = $this->em->getRepository(Establishment::class)->find($id);
-
-        # On vérifie que l'établissement existe bien
-        if (empty($establishment)) {
-            return false;
-        }
-
-        $card = new Card();
-
-        $card->setEstablishment($establishment);
-        $card->setCodeCard($this->cm->generateCardCode($establishment->getCodeEstablishment()));
-        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
+        # On génère le code de la carte
+        $card = $this->cm->setCardCode($card, $establishment);
 
         return $card;
     }
@@ -97,9 +67,7 @@ class CardFactory
     {
         $card = new Card();
 
-        $card->setEstablishment($establishment);
-        $card->setCodeCard($this->cm->generateCardCode($establishment->getCodeEstablishment()));
-        $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
+        $card = $this->cm->setCardCode($card, $establishment);
 
         return $card;
     }
@@ -108,7 +76,8 @@ class CardFactory
      * Créé une entité Card
      * @return Card
      */
-    public function createCard(){
+    public function createCard()
+    {
         return new Card();
     }
 }

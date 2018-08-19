@@ -73,6 +73,31 @@ resources:
                                     customer:
                                         type: object
 
+            add_customer_to_card:
+                method: 'POST'
+                #access_control: 'is_granted("ROLE_CUSTOMER")'
+                path: 'card/addCustomer'
+                controller: 'App\Controller\Card\AddCustomer'
+                swagger_context:
+                    summary: "Raccorde un client avec une carte de fidélité"
+                    description: "Permet de sélectionner une carte vide, ou de la générer automatiquement si aucune n'est disponible, ou bien d'ajouter l'id du client sur une carte existente passé en paramètre"
+                    requestBody: '{"establishment": "/api/establishments/1","customer": "/api/customers/1", "codeCard" : "0123456789"}'
+                    parameters:
+                        - in: body
+                          name: card
+                          schema:
+                              type: object
+                              required:
+                                  - establishment
+                                  - customer
+                              properties:
+                                  establishment:
+                                      type: object
+                                  customer:
+                                      type: object
+                                  codeCard:
+                                      type: string
+
         itemOperations:
             get:
                 method: 'GET'
