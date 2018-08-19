@@ -55,23 +55,18 @@ resources:
                 swagger_context:
                     summary: 'Création de carte de fidélité'
                     description: "Créer une nouvelle carte de fidélité à partir d'un établissement existant"
-                    requestBody: '{"establishment": "/api/establishments/1","establishmentCode": 123}'
+                    requestBody: '{"establishment": "/api/establishments/1"}'
                     parameters:
                         - in: body
                           name: card
                           schema:
-                                type: object
-                                required:
-                                    - establishment
-                                properties:
-                                    establishment:
-                                        type: object
-                                    codeCustomer:
-                                        type: string
-                                    codeCard:
-                                        type: string
-                                    customer:
-                                        type: object
+                              type: object
+                              required:
+                                  - establishment
+                              properties:
+                                  establishment:
+                                      type: object
+                                      example: ["/api/establishments/1"]
 
             add_customer_to_card:
                 method: 'POST'
@@ -93,10 +88,13 @@ resources:
                               properties:
                                   establishment:
                                       type: object
+                                      example: ["/api/establishments/1"]
                                   customer:
                                       type: object
+                                      example: ["/api/customers/1"]
                                   codeCard:
                                       type: string
+                                      example: ["1230456789"]
 
         itemOperations:
             get:
@@ -125,16 +123,15 @@ resources:
                             content:
                                 application/pdf:
 
-            put:
-                method: 'PUT'
-                #access_control: 'is_granted("ROLE_STAFF")'
-                path: '/cards/{id}'
-                requirements:
-                    id: '\d+'
-                swagger_context:
-                    summary: "Modification d'une carte de fidélité"
-                    description: "Permet de modifier une carte de fidélité à partir de son id"
-
+#            put:
+#                method: 'PUT'
+#                #access_control: 'is_granted("ROLE_STAFF")'
+#                path: '/cards/{id}'
+#                requirements:
+#                    id: '\d+'
+#                swagger_context:
+#                    summary: "Modification d'une carte de fidélité"
+#                    description: "Permet de modifier une carte de fidélité à partir de son id"               
             delete:
                 method: 'DELETE'
                 #access_control: 'is_granted("ROLE_STAFF")'
