@@ -250,12 +250,12 @@ resources:
                                     type: string
                                     example: [
                                                 {
-                                                    "streetNumber": "string",
-                                                    "streetName": "string",
-                                                    "complement": "string",
-                                                    "zipCode": "string",
-                                                    "city": "string",
-                                                    "country": "string",
+                                                    "streetNumber": "1",
+                                                    "streetName": "rue du commerce",
+                                                    "complement": "",
+                                                    "zipCode": "75015",
+                                                    "city": "Paris",
+                                                    "country": "France",
                                                 }
                                              ]
                                 addresses:
@@ -278,6 +278,7 @@ resources:
                     id: '\d+'
                 swagger_context:
                     summary: 'Delete the customer.'
+
             reset_password:
                 method: 'PATCH'
                 #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
@@ -296,7 +297,7 @@ resources:
                               properties:
                                   password:
                                       type: string
-                                      example: "string(8-20)"
+                                      example: "string(8-20) monSuperMotDePasse"
             #enable_account:
                 #method: 'GET'
                 #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
