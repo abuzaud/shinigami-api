@@ -94,7 +94,7 @@ resources:
                                       example: ["/api/customers/1"]
                                   codeCard:
                                       type: string
-                                      example: ["1230456789"]
+                                      example: "1230456789"
 
         itemOperations:
             get:
