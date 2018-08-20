@@ -143,8 +143,8 @@ resources:
                     description: "Permet de supprimer une carte de fidélité à partir de son id"
 
     App\Entity\Customer:
-        #attributes:
-            #normalization_context: {groups: ['read']}
+        attributes:
+            normalization_context: {groups: ['read']}
             #denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
