@@ -12,8 +12,7 @@ use App\Entity\Establishment;
 use App\Exception\CardException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Workflow\Exception\TransitionException;
-use Symfony\Component\Workflow\Registry;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * Class CardManager.
@@ -31,14 +30,14 @@ class CardManager
      * @param EntityManagerInterface $em
      * @param CardPdf $pdf
      * @param UrlGeneratorInterface $router
-     * @param Registry $registry
+     * @param WorkflowInterface $workflow
      */
-    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router, Registry $registry)
+    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router, WorkflowInterface $workflow)
     {
         $this->em = $em;
         $this->pdf = $pdf;
         $this->router = $router;
-        $this->workflow = $registry;
+        $this->workflow = $workflow;
     }
 
     /**
@@ -185,14 +184,12 @@ class CardManager
      */
     public function setCardCode(Card $card, Establishment $establishment): ?Card
     {
-        $workflow = $this->workflow->get($card, 'loyalty_card');
-
         $card->setEstablishment($establishment);
         $card->setCodeCard($this->generateCardCode($establishment->getCodeEstablishment()));
         $card->setCodeCustomer(substr($card->getCodeCard(), 3, 6));
 
-        if ($workflow->can($card, 'create_code')) {
-            $workflow->apply($card, 'create_code');
+        if ($this->workflow->can($card, 'create_code')) {
+            $this->workflow->apply($card, 'create_code');
         }
 
         return $card;
@@ -230,12 +227,9 @@ class CardManager
             echo '[' . $exception->getCode() . '] ' . $exception->getMessage();
         }
 
-        # On récupère le workflow de la carte
-        $workflow = $this->workflow->get($card, 'loyalty_card');
-
         # On change l'état de la carte
-        if ($workflow->can($card, 'activate')) {
-            $workflow->apply($card, 'activate');
+        if ($this->workflow->can($card, 'activate')) {
+            $this->workflow->apply($card, 'activate');
         }
 
         return $card;
@@ -246,17 +240,16 @@ class CardManager
      * @param Card $card
      * @return Card
      */
-    public function deactivateCard(Card $card): Card
+    public function deactivateCard(Card $card)
     {
-        $workflow = $this->workflow->get($card, 'loyalty_card');
-
         $card->desactivateCard();
 
-        if ($workflow->can($card, 'deactivate')) {
-            $workflow->apply($card, 'deactivate');
+        if ($this->workflow->can($card, 'deactivate')) {
+            $this->workflow->apply($card, 'deactivate');
+            return $card;
         }
 
-        return $card;
+        return false;
     }
 }
 
