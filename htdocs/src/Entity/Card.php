@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * A card
@@ -26,14 +27,14 @@ class Card
 
     /**
      * @var string $codeCustomer The customer loyalty code
-     *
+     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=6, unique=true)
      */
     private $codeCustomer;
 
     /**
      * @var string $codeCard The establishment code, the customer loyalty code and the checksum
-     *
+     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=12)
      */
     private $codeCard;
