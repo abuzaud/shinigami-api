@@ -30,14 +30,14 @@ class CardManager
      * @param EntityManagerInterface $em
      * @param CardPdf $pdf
      * @param UrlGeneratorInterface $router
-     * @param WorkflowInterface $workflow
+     * @param WorkflowInterface $workflowLoyaltyCard
      */
-    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router, WorkflowInterface $workflow)
+    public function __construct(EntityManagerInterface $em, CardPdf $pdf, UrlGeneratorInterface $router, WorkflowInterface $workflowLoyaltyCard)
     {
         $this->em = $em;
         $this->pdf = $pdf;
         $this->router = $router;
-        $this->workflow = $workflow;
+        $this->workflow = $workflowLoyaltyCard;
     }
 
     /**

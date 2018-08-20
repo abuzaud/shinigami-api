@@ -38,3 +38,7 @@ services:
     App\Customer\ForgotPasswordSubscriber:
         arguments:
             - '@App\Customer\CustomerManager'
+
+    App\Card\CardManager:
+        arguments:
+            $workflowLoyaltyCard : '@workflow.loyalty_card'
