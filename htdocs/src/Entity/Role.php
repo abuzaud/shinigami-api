@@ -46,6 +46,16 @@ class Role implements RoleHierarchyInterface
     private $role;
 
     /**
+     * Role constructor.
+     * @param string $role
+     */
+    public function __construct(string $role)
+    {
+        $this->setRole($role);
+    }
+
+
+    /**
      * @return mixed
      */
     public function getId(): ?int

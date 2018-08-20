@@ -15,7 +15,7 @@ class RoleTest extends TestCase
      * Test d'instanciation d'un Role
      */
     public function testInstanciationRole(){
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $this->assertInstanceOf(Role::class, $role);
     }
 
@@ -25,19 +25,19 @@ class RoleTest extends TestCase
     public function testSetRoleSemanticValue(): void
     {
         $value = 'customer';
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setRole($value);
         $this->assertNotSame($value, $role->getRole());
         $this->assertSame(strtoupper('role_' . $value), $role->getRole());
 
         $value = 'role_customer';
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setRole($value);
         $this->assertNotSame($value, $role->getRole());
         $this->assertSame(strtoupper($value), $role->getRole());
 
         $value = 'ROLE_CUSTOMER';
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setRole($value);
         $this->assertSame($value, $role->getRole());
     }

@@ -82,6 +82,17 @@ class CardTest extends TestCase
     }
 
     /**
+     * Test de la suppression d'un client
+     */
+    public function testRemoveCustomer()
+    {
+        $card = new Card();
+        $customer = new Customer();
+        $card->setCustomer($customer);
+        
+    }
+
+    /**
      * Test d'ajout d'une visite
      */
     public function testVisits()
