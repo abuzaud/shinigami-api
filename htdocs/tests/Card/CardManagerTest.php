@@ -11,6 +11,7 @@ use App\Card\CardFactory;
 use App\Card\CardManager;
 use App\Card\CardPdf;
 use App\Entity\Card;
+use App\Entity\Customer;
 use App\Entity\Establishment;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -120,8 +121,7 @@ class CardManagerTest extends TestCase
 
         # On génére le code et on le test
         for ($i = 0; $i < 20; $i++) {
-            $code = $cm->generateCustomerCode();
-            $this->assertSame(6, strlen($code));
+            $this->assertSame(6, strlen($cm->generateCustomerCode()));
         }
     }
 
@@ -235,15 +235,12 @@ class CardManagerTest extends TestCase
             # On vérifie le checksum
             $codeEstablishment = substr($code, 0, 3);
             $codeCustomer = substr($code, 3, 6);
-            $supposeChecksum = intval(substr($code, -1));
-            $checksum = (intval($codeEstablishment) + intval($codeCustomer)) % 9;
 
             # On calcul le modulo de la carte et on vérifie avec celui déjà généré
-            $this->assertSame($supposeChecksum, $checksum);
+            $this->assertSame(intval(substr($code, -1)), (intval($codeEstablishment) + intval($codeCustomer)) % 9);
         }
     }
 
-    /*
     public function testSetCardCode()
     {
         #Mock du repository
@@ -278,10 +275,7 @@ class CardManagerTest extends TestCase
         $cm->setCardCode($card, $establishment);
     }
 
-    public function testSetCardCustomer()
-    {
-    }
-*/
+
     public function testDeactivateCard()
     {
         #Mock du repository
@@ -309,18 +303,59 @@ class CardManagerTest extends TestCase
             ->method('apply')
             ->willReturn(true);
 
-        $workflow->expects($this->any())
-            ->method('apply')
-            ->willReturn(true);
-
         $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
 
         $card = new Card;
         $card->setState(['activated', 'code_created']);
         $this->assertSame(['activated', 'code_created'], $card->getState());
-
-
         $this->assertInstanceOf(Card::class, $cm->deactivateCard($card));
 
-    }/**/
+        # Si on ne peut pas changer le workflow de la carte
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->any())
+            ->method('can')
+            ->willReturn(false);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
+
+        $this->assertFalse($cm->deactivateCard($card));
+
+    }
+
+    /**
+     *  Test de l'ajout d'un client sur une carte
+     */
+    public function testCardCustomer()
+    {
+        $card = new Card();
+        $card->setCodeCard('1230456789');
+        $customer = new Customer();
+        $customer->setFirstName('Antoine');
+
+        #Mock du repository
+        $repository = $this->createMock(ObjectRepository::class);
+        $repository->expects($this->any())
+            ->method('findby')
+            ->willReturn(null);
+
+        # Mock du EntityManager
+        $em = $this->createMock(EntityManagerInterface::class);
+        $em->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($repository);
+        # On mock le cardPDF et UrlGeneratorInterface
+        $cardPDF = $this->createMock(CardPdf::class);
+        $urlGeneratorInterface = $this->createMock(UrlGeneratorInterface::class);
+
+        # On mock le workflow
+        $workflow = $this->createMock(WorkflowInterface::class);
+        $workflow->expects($this->any())
+            ->method('can')
+            ->willReturn(true);
+
+        $cm = new CardManager($em, $cardPDF, $urlGeneratorInterface, $workflow);
+
+        $cm->setCardCustomer($card, $customer);
+        $this->assertSame('Antoine', $card->getCustomer()->getFirstName());
+    }
 }

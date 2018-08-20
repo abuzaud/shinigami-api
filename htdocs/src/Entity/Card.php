@@ -86,6 +86,7 @@ class Card
         $this->visits = new ArrayCollection();
         $this->state = ['blank' => 1];
         $this->activate = false;
+        $this->points = 0;
     }
 
     /**

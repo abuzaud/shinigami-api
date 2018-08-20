@@ -217,7 +217,7 @@ class CardManager
 
         # Si le numéro de la carte est incorrecte
         if (strlen($card->getCodeCard()) !== 10) {
-            throw new CardException('The card\'s code is incorrect');
+            throw new CardException('Le code de la carte est incorrecte.');
             return false;
         }
 

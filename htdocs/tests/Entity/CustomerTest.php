@@ -24,6 +24,14 @@ use PHPUnit\Framework\TestCase;
 class CustomerTest extends TestCase
 {
     /**
+     * Test de l'ID
+     */
+    public function testId(){
+        $customer = new Customer();
+        $this->assertNull($customer->getId());
+    }
+
+    /**
      * Test du firstName
      */
     public function testFirstName()
@@ -136,22 +144,34 @@ class CustomerTest extends TestCase
      */
     public function testRoles()
     {
-        $customer = new Customer();
-        $role = new Role('ROLE_USER');
+        $customer1 = new Customer();
+        $customer2 = new Customer();
+        $role1 = new Role('ROLE_USER');
+        $role2 = new Role('ROLE_ADMIN');
 
-        $customer->addUserRole($role);
+        $customer1->addUserRole($role1);
 
-        $this->assertInstanceOf(Collection::class, $customer->getUserRoles());
+        $this->assertCount(1, $customer1->getUserRoles());
+        $this->assertInstanceOf(Collection::class, $customer1->getUserRoles());
 
-        foreach ($customer->getUserRoles() as $role) {
-            $this->assertInstanceOf(Role::class, $role);
+        foreach ($customer1->getUserRoles() as $role1) {
+            $this->assertInstanceOf(Role::class, $role1);
         }
 
-        $this->assertSame('array', gettype($customer->getRoles()));
+        $this->assertSame('array', gettype($customer1->getRoles()));
 
-        foreach ($customer->getRoles() as $role) {
-            $this->assertSame('ROLE_USER', $role);
+        foreach ($customer1->getRoles() as $role1) {
+            $this->assertSame('ROLE_USER', $role1);
         }
+
+        $this->assertContainsOnly('string', $customer1->getRoles());
+
+        $customer2->addUserRole($role2);
+        $this->assertCount(1, $customer2->getUserRoles());
+        $this->assertTrue(in_array('ROLE_USER', $customer2->getRoles()));
+
+        $customer2->removeUserRole($role2);
+        $this->assertCount(0, $customer2->getUserRoles());
     }
 
     /**
@@ -250,5 +270,40 @@ class CustomerTest extends TestCase
 
         $customer->removeAddress($address2);
         $this->assertSame(1, count($customer->getAddresses()));
+    }
+
+    /**
+     * Test isActive
+     */
+    public function testIsActive()
+    {
+        $customer = new Customer();
+        $customer->setIsActive(true);
+        $this->assertTrue($customer->getIsActive());
+    }
+
+    /**
+     * Test Salt
+     */
+    public function testSalt()
+    {
+        $customer = new Customer();
+        $this->assertNull($customer->getSalt());
+    }
+
+    /**
+     * Test eraseCredential
+     */
+    public function testEraseCredential()
+    {
+        $customer = new Customer();
+
+        $customer->setPassword('0123456789AZerty');
+        $customer->setToken('01234d5d6g4zfze8fez84fr6z4g6zgseg56468D5fvez');
+        $this->assertSame('0123456789AZerty', $customer->getPassword());
+
+        $customer->eraseCredentials();
+        $this->assertSame('', $customer->getPassword());
+        $this->assertSame('', $customer->getToken());
     }
 }

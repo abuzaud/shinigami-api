@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\MappedSuperclass()
  */
-abstract class User implements UserInterface, \Serializable
+abstract class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -430,25 +430,7 @@ abstract class User implements UserInterface, \Serializable
      */
     public function eraseCredentials()
     {
-    }
-
-    public function serialize()
-    {
-        return serialize([
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->isActive
-        ]);
-    }
-
-    public function unserialize($serialized): void
-    {
-        [
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->isActive
-        ] = unserialize($serialized, ['allowed_classes' => false]);
+        $this->password = '';
+        $this->token = '';
     }
 }

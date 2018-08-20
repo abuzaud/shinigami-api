@@ -22,6 +22,14 @@ class AddressTest extends TestCase
     }
 
     /**
+     * Test de l'ID
+     */
+    public function testId(){
+        $address = new Address();
+        $this->assertNull($address->getId());
+    }
+
+    /**
      * Test du streetNumber
      */
     public function testStreetNumber()

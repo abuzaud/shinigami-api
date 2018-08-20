@@ -20,7 +20,7 @@ class RoleTest extends TestCase
     }
 
     /**
-     *
+     * Test Set Roles
      */
     public function testSetRoleSemanticValue(): void
     {
@@ -40,5 +40,22 @@ class RoleTest extends TestCase
         $role = new Role('ROLE_USER');
         $role->setRole($value);
         $this->assertSame($value, $role->getRole());
+    }
+
+    /**
+     * Test ID
+     */
+    public function testId(){
+        $role = new Role('ROLE_USER');
+        $this->assertNull($role->getId());
+    }
+
+    /**
+     * Test Name
+     */
+    public function testName(){
+        $role = new Role('ROLE_USER');
+        $role->setName('User');
+        $this->assertSame('User', $role->getName());
     }
 }

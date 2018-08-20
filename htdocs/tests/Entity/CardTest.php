@@ -31,6 +31,16 @@ class CardTest extends TestCase
 
 
     /**
+     * Test de l'ID
+     */
+    public function testId()
+    {
+        $card = new Card;
+        $this->assertNull($card->getId());
+    }
+
+
+    /**
      * Test de l'état initial du workflow
      */
     public function testInitialWorkflowState()
@@ -60,6 +70,7 @@ class CardTest extends TestCase
         $card->setCodeCustomer('542638');
         $this->assertSame('542638', $card->getCodeCustomer());
     }
+
     /**
      * Test d'ajout d'un code card
      */
@@ -89,7 +100,10 @@ class CardTest extends TestCase
         $card = new Card();
         $customer = new Customer();
         $card->setCustomer($customer);
-        
+        $this->assertInstanceOf(Customer::class, $card->getCustomer());
+
+        $card->removeCustomer();
+        $this->assertNull($card->getCustomer());
     }
 
     /**
@@ -105,7 +119,7 @@ class CardTest extends TestCase
         $this->assertInstanceOf(Collection::class, $card->getVisits());
 
         $card->addVisit($visit2);
-        foreach ($card->getVisits() as $visit){
+        foreach ($card->getVisits() as $visit) {
             $this->assertInstanceOf(Visit::class, $visit);
         }
     }
@@ -140,5 +154,34 @@ class CardTest extends TestCase
         # On désactive la carte
         $card->desactivateCard();
         $this->assertFalse($card->getActivated());
+    }
+
+    /**
+     * Test de suppression d'une visite
+     */
+    public function testRemoveVisit()
+    {
+        $card = new Card();
+        $visit = new Visit();
+
+        $card->addVisit($visit);
+        $this->assertCount(1, $card->getVisits());
+
+        $card->removeVisit($visit);
+        $this->assertCount(0, $card->getVisits());
+    }
+
+    /**
+     * Test d'ajout de code à l'établissement
+     */
+    public function testEstablishmentCode()
+    {
+        $card = new Card();
+        $establishment = new Establishment();
+        $establishment->setCodeEstablishment(123);
+
+        $card->setEstablishment($establishment);
+
+        $this->assertSame(123, $card->getEstablishmentCode());
     }
 }
