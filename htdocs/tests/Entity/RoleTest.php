@@ -11,6 +11,17 @@ use PHPUnit\Framework\TestCase;
  */
 class RoleTest extends TestCase
 {
+    /**
+     * Test d'instanciation d'un Role
+     */
+    public function testInstanciationRole(){
+        $role = new Role();
+        $this->assertInstanceOf(Role::class, $role);
+    }
+
+    /**
+     *
+     */
     public function testSetRoleSemanticValue(): void
     {
         $value = 'customer';

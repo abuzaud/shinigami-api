@@ -22,6 +22,15 @@ use PHPUnit\Framework\TestCase;
 class CustomerTest extends TestCase
 {
     /**
+     * Test d'instanciation d'un Customer
+     */
+    public function testInstanciationCustomer()
+    {
+        $customer = new Customer();
+        $this->assertInstanceOf(Customer::class, $customer);
+    }
+
+    /**
      * Test du username des customers
      */
     public function testCustomerUsername()
@@ -71,7 +80,8 @@ class CustomerTest extends TestCase
     /**
      * Test d'ajout et suppression d'établissements d'un customer
      */
-    public function testCustomerAddRemoveEstablishment(){
+    public function testCustomerAddRemoveEstablishment()
+    {
         $customer = new Customer();
         $establishment1 = new Establishment();
         $establishment2 = new Establishment();
@@ -91,7 +101,7 @@ class CustomerTest extends TestCase
     /**
      * Test d'ajout et suppression des adresses
      */
-    public function test()
+    public function testCustomerAddRemoveAddress()
     {
         $customer = new Customer();
         $address1 = new Address();

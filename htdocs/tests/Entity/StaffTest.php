@@ -13,8 +13,24 @@ use App\Entity\Establishment;
 use App\Entity\Staff;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class StaffTest
+ * @package App\Tests\Entity
+ */
 class StaffTest extends TestCase
 {
+    /**
+     * Test d'instanciation d'un Staff
+     */
+    public function testInstanciationStaff()
+    {
+        $staff = new Staff();
+        $this->assertInstanceOf(Staff::class, $staff);
+    }
+
+    /**
+     * Test d'ajout de username
+     */
     public function testStaffAddUsername(){
         $staff = new Staff();
         $username = "test@test.com";
