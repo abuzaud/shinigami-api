@@ -49,12 +49,13 @@ class Card
     /**
      * @var Visit $visits The use of the loyalty card
      * @ORM\OneToMany(targetEntity="Visit", mappedBy="card", cascade={"persist"})
+     * @Groups({"read", "write"})
      */
     private $visits;
 
     /**
      * @var integer $points Points accumulated on the loyalty card
-     *
+     * @Groups({"read", "write"})
      * @ORM\Column(type="integer", nullable=true)
      */
     private $points;
@@ -71,22 +72,21 @@ class Card
      * @var string $state State of the current card
      *
      * @ORM\Column(type="array", nullable=false)
-     * @Groups({"read", "write"})
      */
     public $state;
 
     /**
-     * @var boolean $activate Card activated property
-     *
+     * @var boolean $activated Card activated property
+     * @Groups({"read", "write"})
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private $activate;
+    private $activated;
     
     public function __construct()
     {
         $this->visits = new ArrayCollection();
         $this->state = ['blank' => 1];
-        $this->activate = false;
+        $this->activated = false;
         $this->points = 0;
     }
 
@@ -278,12 +278,12 @@ class Card
 
     public function getActivated()
     {
-        return $this->activate;
+        return $this->activated;
     }
 
     private function setActivated(bool $bool): self
     {
-        $this->activate = $bool;
+        $this->activated = $bool;
 
         return $this;
     }
