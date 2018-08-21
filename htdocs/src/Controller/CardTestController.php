@@ -12,6 +12,7 @@ use App\Card\CardManager;
 use App\Card\CardPdf;
 use App\Entity\Customer;
 use App\Entity\Establishment;
+use App\Entity\Role;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;

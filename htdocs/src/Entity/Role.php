@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
-class Role implements RoleHierarchyInterface
+class Role
 {
     /**
      * @ORM\Id()
@@ -44,6 +44,16 @@ class Role implements RoleHierarchyInterface
      * @Groups({"read", "write"})
      */
     private $role;
+
+    /**
+     * Role constructor.
+     * @param string $role
+     */
+    public function __construct(string $role)
+    {
+        $this->setRole($role);
+    }
+
 
     /**
      * @return mixed
@@ -93,17 +103,5 @@ class Role implements RoleHierarchyInterface
         $this->role = $role;
 
         return $this;
-    }
-
-    /**
-     * Returns an array of all reachable roles by the given ones.
-     * Reachable roles are the roles directly assigned but also all roles that
-     * are transitively reachable from them in the role hierarchy.
-     *
-     * @param Role[] $roles An array of directly assigned roles
-     * @return Role[] An array of all reachable roles
-     */
-    public function getReachableRoles(array $roles)
-    {
     }
 }

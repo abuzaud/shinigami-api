@@ -86,6 +86,7 @@ class Card
         $this->visits = new ArrayCollection();
         $this->state = ['blank' => 1];
         $this->activate = false;
+        $this->points = 0;
     }
 
     /**
@@ -118,7 +119,7 @@ class Card
     /**
      * @return int|null
      */
-    public function getCodeCustomer(): ?int
+    public function getCodeCustomer(): ?string
     {
         return $this->codeCustomer;
     }
@@ -127,7 +128,7 @@ class Card
      * @param int $codeCustomer
      * @return Card
      */
-    public function setCodeCustomer(int $codeCustomer): self
+    public function setCodeCustomer(string $codeCustomer): self
     {
         $this->codeCustomer = $codeCustomer;
 
@@ -236,6 +237,15 @@ class Card
         $this->points = $points;
 
         return $this;
+    }
+
+    /**
+     * Ajoute des points à la carte
+     * @param int $points
+     */
+    public function addPoints(int $points)
+    {
+        $this->points += $points;
     }
 
     /**
