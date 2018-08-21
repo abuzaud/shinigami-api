@@ -71,6 +71,7 @@ class Card
      * @var string $state State of the current card
      *
      * @ORM\Column(type="array", nullable=false)
+     * @Groups({"read", "write"})
      */
     public $state;
 
