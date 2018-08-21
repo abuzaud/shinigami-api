@@ -17,5 +17,8 @@
 ### Tests ###
 /htdocs/post_api_test.json
 
+## Phpunit
+/htdocs/public/coverage
+
 ### Mac ###
 .DS_Store
