@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Class CustomerManager
  * @package App\Customer
+ * @codeCoverageIgnore
  */
 class CustomerManager
 {

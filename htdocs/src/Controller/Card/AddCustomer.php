@@ -13,6 +13,11 @@ use App\Entity\Card;
 use App\Exception\CardException;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class AddCustomer
+ * @package App\Controller\Card
+ * @codeCoverageIgnore
+ */
 class AddCustomer
 {
     private $cf;

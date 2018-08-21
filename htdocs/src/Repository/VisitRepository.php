@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Visit|null findOneBy(array $criteria, array $orderBy = null)
  * @method Visit[]    findAll()
  * @method Visit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class VisitRepository extends ServiceEntityRepository
 {

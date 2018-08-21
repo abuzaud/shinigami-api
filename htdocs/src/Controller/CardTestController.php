@@ -9,19 +9,22 @@ namespace App\Controller;
 
 use App\Card\CardFactory;
 use App\Card\CardManager;
-use App\Card\CardPdf;
 use App\Entity\Customer;
 use App\Entity\Establishment;
-use App\Entity\Role;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/**
+ * Class CardTestController
+ * @package App\Controller
+ * Page de test de l'API
+ * @codeCoverageIgnore
+ */
 class CardTestController extends Controller
 {
 

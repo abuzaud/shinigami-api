@@ -8,6 +8,7 @@ use App\Entity\Customer;
 /**
  * Class CustomerSpecial
  * @package App\Controller\User
+ * @codeCoverageIgnore
  */
 class CustomerRegister
 {

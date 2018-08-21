@@ -9,6 +9,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class StaffSubscriber
  * @package App\Staff
+ * @codeCoverageIgnore
  */
 class StaffSubscriber implements EventSubscriberInterface
 {

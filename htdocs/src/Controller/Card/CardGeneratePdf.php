@@ -15,6 +15,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
+/**
+ * Class CardGeneratePdf
+ * @package App\Controller\Card
+ * @codeCoverageIgnore
+ */
 class CardGeneratePdf
 {
     private $cm;

@@ -2,9 +2,8 @@
 
 namespace App\Staff;
 
-use ApiPlatform\Core\Exception\ItemNotFoundException;
-use App\Entity\Staff;
 use App\Entity\Role;
+use App\Entity\Staff;
 use App\Service\UtilsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

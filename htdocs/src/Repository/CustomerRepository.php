@@ -12,6 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Customer|null findOneBy(array $criteria, array $orderBy = null)
  * @method Customer[]    findAll()
  * @method Customer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class CustomerRepository extends ServiceEntityRepository
 {

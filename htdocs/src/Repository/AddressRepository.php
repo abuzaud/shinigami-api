@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Address|null findOneBy(array $criteria, array $orderBy = null)
  * @method Address[]    findAll()
  * @method Address[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class AddressRepository extends ServiceEntityRepository
 {
