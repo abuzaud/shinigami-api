@@ -112,7 +112,7 @@ resources:
                 #access_control: 'is_granted("ROLE_CUSTOMER")'
                 path: '/cards/pdf/{id}'
                 requirements:
-                  id: '\d+'
+                    id: '\d+'
                 controller: 'App\Controller\Card\CardGeneratePdf'
                 swagger_context:
                     summary: 'Génération du fichier PDF de la carte de fidélité'
@@ -122,6 +122,16 @@ resources:
                             description: OK
                             content:
                                 application/pdf:
+            deactivate_card:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: 'card/deactivate/{id}'
+                requirements:
+                    id: '\d+'
+                controller: 'App\Controller\Card\Deactivate'
+                swagger_context:
+                    summary: "Désactive une carte de fidélité"
+                    description: "Désactivation d'une carte de fidélité"
 
 #            put:
 #                method: 'PUT'
