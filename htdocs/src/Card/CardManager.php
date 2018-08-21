@@ -103,6 +103,7 @@ class CardManager
     /**
      * Génère un nouveau code unique pour l'établissement.
      * @throws \Exception
+     * @codeCoverageIgnore
      */
     public function generateEstablishmentCode(): ?string
     {
@@ -159,6 +160,7 @@ class CardManager
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
+     * @codeCoverageIgnore
      */
     public function generateCardPdf(Card $card)
     {
@@ -239,6 +241,7 @@ class CardManager
      * Permet de désactiver une carte
      * @param Card $card
      * @return Card
+     * @codeCoverageIgnore
      */
     public function deactivateCard(Card $card)
     {
@@ -255,6 +258,7 @@ class CardManager
      * Permet de désactiver une carte
      * @param Card $card
      * @return Card
+     * @codeCoverageIgnore
      */
     public function activateCard(Card $card)
     {
@@ -268,6 +272,13 @@ class CardManager
         return false;
     }
 
+
+    /**
+     * Permet de supprimer une carte (son status de workflow uniquement)
+     * @param Card $card
+     * @return Card|bool
+     * @codeCoverageIgnore
+     */
     public function deleteCard(Card $card)
     {
         if ($this->workflow->can($card, 'delete')) {

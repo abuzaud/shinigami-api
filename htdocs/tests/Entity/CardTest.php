@@ -157,6 +157,27 @@ class CardTest extends TestCase
     }
 
     /**
+     * Test d'activation de carte
+     */
+    public function testActivateCard()
+    {
+        $card = new Card();
+        $customer = new Customer();
+
+        # Une carte est activé lorsqu'on lui ajoute un customer
+        $card->setCustomer($customer);
+        $this->assertTrue($card->getActivated());
+
+        # On désactive la carte
+        $card->desactivateCard();
+        $this->assertFalse($card->getActivated());
+
+        # On active la carte
+        $card->activateCard();
+        $this->assertTrue($card->getActivated());
+    }
+
+    /**
      * Test de suppression d'une visite
      */
     public function testRemoveVisit()
