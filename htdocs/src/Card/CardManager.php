@@ -242,10 +242,38 @@ class CardManager
      */
     public function deactivateCard(Card $card)
     {
-        $card->desactivateCard();
-
         if ($this->workflow->can($card, 'deactivate')) {
             $this->workflow->apply($card, 'deactivate');
+            $card->desactivateCard();
+            return $card;
+        }
+
+        return false;
+    }
+
+    /**
+     * Permet de désactiver une carte
+     * @param Card $card
+     * @return Card
+     */
+    public function activateCard(Card $card)
+    {
+        if ($this->workflow->can($card, 'activate')) {
+            $this->workflow->apply($card, 'activate');
+            $card->activateCard();
+
+            return $card;
+        }
+
+        return false;
+    }
+
+    public function deleteCard(Card $card)
+    {
+        if ($this->workflow->can($card, 'delete')) {
+            $this->workflow->apply($card, 'delete');
+            $card->desactivateCard();
+
             return $card;
         }
 

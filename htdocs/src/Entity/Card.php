@@ -176,6 +176,9 @@ class Card
         return $this;
     }
 
+    /**
+     *
+     */
     public function removeCustomer()
     {
         $this->customer = null;
@@ -276,11 +279,21 @@ class Card
         return $this;
     }
 
+
+    /**
+     * Récupérer le status d'activation de la carte
+     * @return bool|Boolean
+     */
     public function getActivated()
     {
         return $this->activated;
     }
 
+    /**
+     * Permet de changer l'activation de la carte
+     * @param bool $bool
+     * @return Card
+     */
     private function setActivated(bool $bool): self
     {
         $this->activated = $bool;
@@ -288,9 +301,24 @@ class Card
         return $this;
     }
 
+    /**
+     * Permet de désactiver la carte
+     * @return Card
+     */
     public function desactivateCard(): self
     {
         $this->setActivated(false);
+
+        return $this;
+    }
+
+    /**
+     * Permet d'activer la carte
+     * @return Card
+     */
+    public function activateCard(): self
+    {
+        $this->setActivated(true);
 
         return $this;
     }

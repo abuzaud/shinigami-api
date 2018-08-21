@@ -133,16 +133,29 @@ resources:
                     summary: "Désactive une carte de fidélité"
                     description: "Désactivation d'une carte de fidélité"
 
-#            put:
-#                method: 'PUT'
-#                #access_control: 'is_granted("ROLE_STAFF")'
-#                path: '/cards/{id}'
-#                requirements:
-#                    id: '\d+'
-#                swagger_context:
-#                    summary: "Modification d'une carte de fidélité"
-#                    description: "Permet de modifier une carte de fidélité à partir de son id"               
-            delete:
+            activate_card:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: 'card/activate/{id}'
+                requirements:
+                    id: '\d+'
+                controller: 'App\Controller\Card\Activate'
+                swagger_context:
+                    summary: "Active une carte de fidélité"
+                    description: "Activation d'une carte de fidélité"
+
+            delete_card:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: 'card/delete/{id}'
+                requirements:
+                    id: '\d+'
+                controller: 'App\Controller\Card\Delete'
+                swagger_context:
+                    summary: "Supprime une carte de fidélité"
+                    description: "Supprime une carte de fidélité, mais pas de la base de données. Cela va modifier le status de la carte pour permettre de garder l'historique de celle-ci."
+
+            remove:
                 method: 'DELETE'
                 #access_control: 'is_granted("ROLE_STAFF")'
                 path: '/cards/{id}'
