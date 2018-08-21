@@ -2,13 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * An address
  *
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
+ *  * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  */
 class Address
 {
@@ -23,6 +29,7 @@ class Address
      * @var integer $streetNumber The street number
      *
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"read", "write"})
      */
     private $streetNumber;
 
@@ -30,6 +37,7 @@ class Address
      * @var string $streetName The name of the street
      *
      * @ORM\Column(type="string", length=150)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $streetName;
@@ -38,6 +46,7 @@ class Address
      * @var string $complement The complement of the address
      *
      * @ORM\Column(type="string", length=150, nullable=true)
+     * @Groups({"read", "write"})
      */
     private $complement;
 
@@ -45,6 +54,7 @@ class Address
      * @var string $zipCode The zip code
      *
      * @ORM\Column(type="string", length=15)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $zipCode;
@@ -53,6 +63,7 @@ class Address
      * @var string $city The city
      *
      * @ORM\Column(type="string", length=50)
+     * @Groups({"read", "write"})
      * @Assert\NotBlank()
      */
     private $city;
@@ -61,6 +72,7 @@ class Address
      * @var string $country The country
      *
      * @ORM\Column(type="string", length=50, options={"default":"France"})
+     * @Groups({"read", "write"})
      */
     private $country;
 
@@ -68,6 +80,7 @@ class Address
      * @var float $latitude The latitude
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"read", "write"})
      */
     private $latitude;
 
@@ -75,6 +88,7 @@ class Address
      * @var float $longitude The longitude
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({"read", "write"})
      */
     private $longitude;
 

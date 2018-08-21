@@ -23,7 +23,6 @@ class GetStaff
         $establishment = $this->em->getRepository(Establishment::class)->find($id);
         $staff = $establishment->getStaff();
 
-        $data = $staff;
-        return $data;
+        return $staff;
     }
 }

@@ -315,9 +315,9 @@ resources:
                               #type: object
 
     App\Entity\Establishment:
-        #attributes:
-            #normalization_context: {groups: ['read']}
-            #denormalization_context: {groups: ['write']}
+        attributes:
+            normalization_context: {groups: ['read']}
+            denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
