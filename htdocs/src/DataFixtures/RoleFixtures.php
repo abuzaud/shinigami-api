@@ -20,19 +20,19 @@ class RoleFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setName('Client');
         $role->setRole('ROLE_CUSTOMER');
         $manager->persist($role);
         $this->addReference(self::ROLE_REFERENCE . 'customer', $role);
 
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setName('Staff');
         $role->setRole('ROLE_STAFF');
         $manager->persist($role);
         $this->addReference(self::ROLE_REFERENCE . 'staff', $role);
 
-        $role = new Role();
+        $role = new Role('ROLE_USER');
         $role->setName('Admin');
         $role->setRole('ROLE_ADMIN');
         $manager->persist($role);
