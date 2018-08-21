@@ -11,6 +11,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 /**
  * Class ForgotPasswordSubscriber
  * @package App\Customer
+ * @codeCoverageIgnore
  */
 final class ForgotPasswordSubscriber implements EventSubscriberInterface
 {

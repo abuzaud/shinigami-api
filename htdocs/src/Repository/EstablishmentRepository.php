@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Establishment|null findOneBy(array $criteria, array $orderBy = null)
  * @method Establishment[]    findAll()
  * @method Establishment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class EstablishmentRepository extends ServiceEntityRepository
 {

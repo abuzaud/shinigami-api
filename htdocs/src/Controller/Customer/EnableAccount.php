@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class EnableAccount
  * @package App\Controller\Customer
+ * @codeCoverageIgnore
  */
 class EnableAccount
 {

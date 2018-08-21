@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Staff|null findOneBy(array $criteria, array $orderBy = null)
  * @method Staff[]    findAll()
  * @method Staff[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class StaffRepository extends ServiceEntityRepository
 {

@@ -14,6 +14,7 @@ use Knp\Snappy\Pdf;
 
 /**
  * Class CardPdf
+ * @codeCoverageIgnore
  * @package App\Card
  */
 class CardPdf

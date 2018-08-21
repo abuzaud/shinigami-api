@@ -9,6 +9,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * Class CustomerSubscriber
  * @package App\Customer
+ * @codeCoverageIgnore
  */
 class CustomerSubscriber implements EventSubscriberInterface
 {

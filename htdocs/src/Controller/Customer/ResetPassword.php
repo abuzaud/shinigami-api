@@ -8,6 +8,7 @@ use App\Entity\Customer;
 /**
  * Class ResetPassword
  * @package App\Controller\Customer
+ * @codeCoverageIgnore
  */
 class ResetPassword
 {

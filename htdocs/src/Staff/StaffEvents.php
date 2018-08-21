@@ -5,6 +5,7 @@ namespace App\Staff;
 /**
  * Class StaffEvents
  * @package App\Staff
+ * @codeCoverageIgnore
  */
 final class StaffEvents
 {

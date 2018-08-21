@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Card|null findOneBy(array $criteria, array $orderBy = null)
  * @method Card[]    findAll()
  * @method Card[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class CardRepository extends ServiceEntityRepository
 {

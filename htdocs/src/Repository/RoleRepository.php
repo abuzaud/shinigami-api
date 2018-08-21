@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Role|null findOneBy(array $criteria, array $orderBy = null)
  * @method Role[]    findAll()
  * @method Role[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @codeCoverageIgnore
  */
 class RoleRepository extends ServiceEntityRepository
 {

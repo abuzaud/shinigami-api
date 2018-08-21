@@ -8,6 +8,7 @@ use App\Entity\Staff;
 /**
  * Class StaffRegister
  * @package App\Controller\Staff
+ * @codeCoverageIgnore
  */
 class StaffRegister
 {

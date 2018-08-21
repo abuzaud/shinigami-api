@@ -8,6 +8,7 @@ use App\Entity\Card;
 /**
  * Class CardCreate
  * @package App\Controller\Card
+ * @codeCoverageIgnore
  */
 class CardCreate
 {

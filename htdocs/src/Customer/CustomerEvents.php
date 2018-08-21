@@ -4,7 +4,8 @@ namespace App\Customer;
 
 /**
  * Class CustomerEvents
- * @package App\Customer
+ * @package App\
+ * @codeCoverageIgnore
  */
 final class CustomerEvents
 {
