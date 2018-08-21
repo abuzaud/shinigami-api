@@ -9,6 +9,7 @@ namespace App\Controller;
 
 use App\Card\CardFactory;
 use App\Card\CardManager;
+use App\Entity\Card;
 use App\Entity\Customer;
 use App\Entity\Establishment;
 use Doctrine\ORM\EntityManagerInterface;
@@ -72,26 +73,21 @@ class CardTestController extends Controller
         $establishment->setName('Lycée Buffon');
         $establishment->setDescription('Prout');
 
-        $card = $cardFactory->createCardFromEstablishment($establishment);
-        $card->setEstablishment($establishment);
+        //$card = $cardFactory->createCardFromEstablishment($establishment);
+        $card = $em->getRepository(Card::class)->find(1);
 
         # Sérializer pour les entités
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
 
-        $jsonEstablishment = $serializer->serialize($establishment, 'json');
-        $jsonCard = $serializer->serialize($card, 'json');
-
         $customer = $em->getRepository(Customer::class)->find(1);
 
         dump($card);
-        $cm->setCardCustomer($card, $customer);
+        $cm->deactivateCard($card);
         dump($card);
 
         $datas = [];
-        $datas[] = $jsonEstablishment;
-        $datas[] = $jsonCard;
 
         return $this->render('debug/cardgeneration.html.twig', [
             'title' => 'Test Génération de carte',

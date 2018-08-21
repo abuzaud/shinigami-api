@@ -315,9 +315,9 @@ resources:
                               #type: object
 
     App\Entity\Establishment:
-        #attributes:
-            #normalization_context: {groups: ['read']}
-            #denormalization_context: {groups: ['write']}
+        attributes:
+            normalization_context: {groups: ['read']}
+            denormalization_context: {groups: ['write']}
         collectionOperations:
             get:
                 method: 'GET'
@@ -334,6 +334,15 @@ resources:
                 path: '/establishments/{id}'
                 requirements:
                     id: '\d+'
+
+            get_staff_from_establishment:
+                method: 'GET'
+                #access_control: 'is_granted("ROLE_ESTABLISHMENT")'
+                path: '/establishments/{id}/staff'
+                controller: 'App\Controller\Establishment\GetStaff'
+                requirements:
+                    id: '\d+'
+
             put:
                 method: 'PUT'
                 #access_control: 'is_granted("ROLE_ADMIN")'

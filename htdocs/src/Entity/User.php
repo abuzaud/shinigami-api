@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,6 +11,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  * @ORM\MappedSuperclass()
  */
 abstract class User implements UserInterface
@@ -54,17 +59,16 @@ abstract class User implements UserInterface
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=128)
-     * @Groups({"read", "write"})
      */
     private $password;
 
     /**
-     * @var Collection|Address[] $addresses The addresses
+     * @var Address $address The address of the establishment
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Address")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Address")
      * @Groups({"read", "write"})
      */
-    private $addresses;
+    private $address;
 
     /**
      * @var string $phoneNumber The phone number
@@ -129,7 +133,7 @@ abstract class User implements UserInterface
      */
     public function __construct()
     {
-        $this->addresses = new ArrayCollection();
+        $this->address = '';
         $this->userRoles = new ArrayCollection();
     }
 
@@ -218,35 +222,20 @@ abstract class User implements UserInterface
     }
 
     /**
-     * @return Collection|Address[]
+     * @return Address
      */
-    public function getAddresses(): Collection
+    public function getAddress(): Address
     {
-        return $this->addresses;
+        return $this->address;
     }
 
     /**
      * @param Address $address
      * @return User
      */
-    public function addAddress(Address $address): self
+    public function setAddress(Address $address): self
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addresses[] = $address;
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Address $address
-     * @return User
-     */
-    public function removeAddress(Address $address): self
-    {
-        if ($this->addresses->contains($address)) {
-            $this->addresses->removeElement($address);
-        }
+        $this->address = $address;
 
         return $this;
     }

@@ -68,7 +68,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
                 $customer->setUsername('username' . $id);
                 $customer->setEmail('customer' . $id . '@domain.com');
                 $customer->setPassword($password);
-                $customer->addAddress($address);
+                $customer->setAddress($address);
                 $customer->setPhoneNumber($phoneNumber);
                 $customer->setBirthday(new \DateTime('now'));
                 $customer->setRegistrationDate(new \DateTime('now'));
