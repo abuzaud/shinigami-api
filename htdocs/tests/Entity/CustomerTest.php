@@ -77,15 +77,9 @@ class CustomerTest extends TestCase
     public function testAddresses()
     {
         $customer = new Customer();
-        $address1 = new Address();
-        $address2 = new Address();
-        $customer->addAddress($address1);
-        $this->assertInstanceOf(Collection::class, $customer->getAddresses());
-
-        $customer->addAddress($address2);
-        foreach ($customer->getAddresses() as $address) {
-            $this->assertInstanceOf(Address::class, $address);
-        }
+        $address = new Address();
+        $customer->setAddress($address);
+        $this->assertInstanceOf(Address::class, $customer->getAddress());
     }
 
     /**
@@ -254,22 +248,13 @@ class CustomerTest extends TestCase
     /**
      * Test d'ajout et suppression des adresses
      */
-    public function testCustomerAddRemoveAddress()
+    public function testCustomerAddress()
     {
         $customer = new Customer();
-        $address1 = new Address();
-        $address2 = new Address();
+        $address = new Address();
 
-        $customer->addAddress($address1);
-
-        $this->assertSame(1, count($customer->getAddresses()));
-        $this->assertContainsOnlyInstancesOf(Address::class, $customer->getAddresses());
-
-        $customer->addAddress($address2);
-        $this->assertSame(2, count($customer->getAddresses()));
-
-        $customer->removeAddress($address2);
-        $this->assertSame(1, count($customer->getAddresses()));
+        $customer->setAddress($address);
+        $this->assertInstanceOf(Address::class, $customer->getAddress());
     }
 
     /**

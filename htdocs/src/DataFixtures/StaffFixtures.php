@@ -65,7 +65,7 @@ class StaffFixtures extends Fixture implements DependentFixtureInterface
             $staff->setLastName('Shinigami' . $i);
             $staff->setEmail('admin' . $i . '@shinigami.com');
             $staff->setPassword($password);
-            $staff->addAddress($address);
+            $staff->setAddress($address);
             $staff->setPhoneNumber($phoneNumber);
             $staff->setBirthday(new \DateTime('now'));
             $staff->setRegistrationDate(new \DateTime('now'));
@@ -91,7 +91,7 @@ class StaffFixtures extends Fixture implements DependentFixtureInterface
                 $staff->setLastName('Lastname ' . $id);
                 $staff->setEmail('staff' . $id . '@shinigami.com');
                 $staff->setPassword($password);
-                $staff->addAddress($address);
+                $staff->setAddress($address);
                 $staff->setPhoneNumber($phoneNumber);
                 $staff->setBirthday(new \DateTime('now'));
                 $staff->setRegistrationDate(new \DateTime('now'));

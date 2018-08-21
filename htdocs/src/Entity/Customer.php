@@ -18,13 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CustomerRepository")
  * @ORM\AssociationOverrides({
- *      @ORM\AssociationOverride(name="addresses",
- *          joinTable=@ORM\JoinTable(
- *              name="customer_address",
- *              joinColumns=@ORM\JoinColumn(name="customer_id", onDelete="CASCADE"),
- *              inverseJoinColumns=@ORM\JoinColumn(name="address_id", onDelete="CASCADE")
- *          )
- *      ),
  *     @ORM\AssociationOverride(name="userRoles",
  *          joinTable=@ORM\JoinTable(
  *              name="customer_role",
