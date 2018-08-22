@@ -42,3 +42,13 @@ services:
     App\Card\CardManager:
         arguments:
             $workflowLoyaltyCard : '@workflow.loyalty_card'
+
+    App\Controller\User\UserInfos:
+        arguments:
+            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
+
+    app.jwt_authentication_success_listener:
+        class: App\EventListener\JWTAuthenticationSuccessListener
+        #arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }

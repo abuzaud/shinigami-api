@@ -208,9 +208,9 @@ resources:
                                 birthday:
                                     #type: string
                                     example: '1990-08-24'
-                                addresses:
-                                    type: object
-                                    example: ["/api/addresses/1"]
+                                addresse:
+                                    type: string
+                                    example: "/api/addresses/1"
                                 phoneNumber:
                                     type: string
                                     example: '0692571843'
@@ -281,9 +281,6 @@ resources:
                                                     "country": "France",
                                                 }
                                              ]
-                                addresses:
-                                    type: class
-                                    example: ["/api/addresses/1"]
                                 phoneNumber:
                                     type: string
                                     example: '0692571843'
@@ -454,7 +451,7 @@ resources:
                                 birthday:
                                     #type: string
                                     example: '1990-08-24'
-                                addresses:
+                                addresse:
                                     type: object
                                     example: ["/api/addresses/1"]
                                 phoneNumber:
@@ -517,3 +514,13 @@ resources:
                 path: '/visits/{id}'
                 requirements:
                     id: '\d+'
+
+    App\Entity\User:
+        collectionOperations:
+        itemOperations:
+            user_infos:
+                method: 'GET'
+                path: '/user/infos'
+                controller: 'App\Controller\User\UserInfos'
+                defaults:
+                    _api_receive: false

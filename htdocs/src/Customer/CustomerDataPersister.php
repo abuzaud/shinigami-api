@@ -37,9 +37,9 @@ class CustomerDataPersister implements DataPersisterInterface
 
     /**
      * @param mixed $data
-     * @return Customer|mixed|object|void
+     * @return Customer
      */
-    public function persist($data)
+    public function persist($data): Customer
     {
         $password = $this->encoder->encodePassword($data, $data->getPassword());
         $data->setPassword($password);
