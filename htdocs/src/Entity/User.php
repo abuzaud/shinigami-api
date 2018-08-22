@@ -133,7 +133,6 @@ abstract class User implements UserInterface
      */
     public function __construct()
     {
-        $this->address = '';
         $this->userRoles = new ArrayCollection();
     }
 
@@ -224,7 +223,7 @@ abstract class User implements UserInterface
     /**
      * @return Address
      */
-    public function getAddress(): Address
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
