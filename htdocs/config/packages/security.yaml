@@ -45,7 +45,7 @@ security:
         #- { path: ^/api/confirm, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/api/reset-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/api/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/api/login, roles: ROLE_ESTABLISHMENT }
+        #- { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
     role_hierarchy:

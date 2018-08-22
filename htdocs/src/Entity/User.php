@@ -23,6 +23,7 @@ abstract class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read"})
      */
     private $id;
 
@@ -59,6 +60,7 @@ abstract class User implements UserInterface
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=128)
+     * @Groups({"write"})*
      */
     private $password;
 
@@ -66,6 +68,7 @@ abstract class User implements UserInterface
      * @var Address $address The address of the establishment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Address")
+     * @ORM\JoinColumn(nullable=false)
      * @Groups({"read", "write"})
      */
     private $address;
@@ -270,7 +273,7 @@ abstract class User implements UserInterface
      * @param \DateTimeInterface $birthday
      * @return User
      */
-    public function setBirthday(\DateTimeInterface $birthday): self
+    public function setBirthday(?\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
 

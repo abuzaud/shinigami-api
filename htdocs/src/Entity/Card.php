@@ -22,20 +22,21 @@ class Card
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read", "write"})
      */
     private $id;
 
     /**
      * @var string $codeCustomer The customer loyalty code
-     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=6, unique=true)
+     * @Groups({"read", "write"})
      */
     private $codeCustomer;
 
     /**
      * @var string $codeCard The establishment code, the customer loyalty code and the checksum
-     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=12)
+     * @Groups({"read", "write"})
      */
     private $codeCard;
 
@@ -57,6 +58,7 @@ class Card
      * @var integer $points Points accumulated on the loyalty card
      * @Groups({"read", "write"})
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read", "write"})
      */
     private $points;
 
@@ -65,6 +67,7 @@ class Card
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Establishment")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read", "write"})
      */
     private $establishment;
 
@@ -72,6 +75,7 @@ class Card
      * @var string $state State of the current card
      *
      * @ORM\Column(type="array", nullable=false)
+     * @Groups({"read", "write"})
      */
     public $state;
 
@@ -79,6 +83,7 @@ class Card
      * @var boolean $activated Card activated property
      * @Groups({"read", "write"})
      * @ORM\Column(type="boolean", nullable=false)
+     * @Groups({"read", "write"})
      */
     private $activated;
     
