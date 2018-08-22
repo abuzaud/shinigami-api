@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -20,17 +21,15 @@ class UserInfos
         $this->serializer = $serializer;
     }
 
+    /**
+     * Retourne les informations de l'utilisateur en fonction du token reçu
+     * @return Response
+     */
     public function __invoke()
     {
         $user = $this->token->getToken()->getUser();
-
-        dump($user);
         $jsonUser = $this->serializer->serialize($user, 'json');
 
-        dump($jsonUser);
-        $response = new JsonResponse($jsonUser);
-
-        dump($response);
-        return $response->sendContent();
+        return new Response($jsonUser);
     }
 }
