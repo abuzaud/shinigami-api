@@ -68,7 +68,7 @@ abstract class User implements UserInterface
      * @var Address $address The address of the establishment
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Address")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      * @Groups({"read", "write"})
      */
     private $address;
