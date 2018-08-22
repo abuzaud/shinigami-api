@@ -1,10 +1,7 @@
 resources:
     App\Entity\Address:
-        #attributes:
-            #normalization_context:
-                #groups: ['name']
-            #denormalization_context:
-                #groups: ['name']
+        attributes:
+            normalization_context: {groups: ['read']}
         collectionOperations:
             get:
                 method: 'GET'

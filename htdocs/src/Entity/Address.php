@@ -11,10 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * An address
  *
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
- *  * @ApiResource(
- *     normalizationContext={"groups"={"read"}},
- *     denormalizationContext={"groups"={"write"}}
- * )
+ * @ApiResource()
  */
 class Address
 {

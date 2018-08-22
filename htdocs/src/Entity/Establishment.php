@@ -13,7 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * An establishment
  *
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\EstablishmentRepository")
  */
 class Establishment
