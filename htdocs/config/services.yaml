@@ -44,6 +44,7 @@ services:
             $workflowLoyaltyCard : '@workflow.loyalty_card'
 
     App\Controller\User\UserInfos:
+        tags: ['controller.service_arguments']
         arguments:
             - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
 

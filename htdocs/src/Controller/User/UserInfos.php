@@ -4,9 +4,7 @@ namespace App\Controller\User;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncode;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class UserInfos
 {
@@ -14,25 +12,25 @@ class UserInfos
      * @var TokenStorageInterface
      */
     private $token;
-    private $encoder;
-    private $normalizer;
     private $serializer;
 
-    public function __construct(TokenStorageInterface $token)
+    public function __construct(TokenStorageInterface $token, SerializerInterface $serializer)
     {
         $this->token = $token;
+        $this->serializer = $serializer;
     }
 
     public function __invoke()
     {
-        $this->encoder = new JsonEncode();
-        $this->normalizer = new ObjectNormalizer();
-        $this->serializer = new Serializer($this->normalizer, $this->encoder);
-
         $user = $this->token->getToken()->getUser();
+
+        dump($user);
         $jsonUser = $this->serializer->serialize($user, 'json');
 
+        dump($jsonUser);
         $response = new JsonResponse($jsonUser);
+
+        dump($response);
         return $response->sendContent();
     }
 }
