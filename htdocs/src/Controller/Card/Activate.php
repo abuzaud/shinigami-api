@@ -11,6 +11,10 @@ use App\Card\CardManager;
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class Activate
+ * @package App\Controller\Card
+ */
 class Activate
 {
 
@@ -20,6 +24,11 @@ class Activate
         $this->cm = $cardManager;
     }
 
+    /**
+     * Active une carte de fidélité
+     * @param $id
+     * @return Card|null|object
+     */
     public function __invoke($id)
     {
         $card = $this->em->getRepository(Card::class)->find($id);

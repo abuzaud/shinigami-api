@@ -29,7 +29,6 @@ class CardGeneratePdf
      * CardView constructor.
      * @param CardManager $cardManager
      * @param EntityManagerInterface $entityManager
-     * @param BinaryFileResponse $fileResponse
      */
     public function __construct(CardManager $cardManager, EntityManagerInterface $entityManager)
     {
