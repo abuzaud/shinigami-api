@@ -123,11 +123,13 @@ abstract class User implements UserInterface
      * @var Collection|Role $userRoles The list of roles
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Role")
+     * @Groups({"read", "write"})
      */
     private $userRoles;
 
     /**
      * @var array $roles The list of roles for the UserInterface
+     * @Groups({"read", "write"})
      */
     private $roles;
 
