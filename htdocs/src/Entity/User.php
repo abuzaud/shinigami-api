@@ -86,7 +86,7 @@ abstract class User implements UserInterface
      * @var \datetime $birthday The birthday
      *
      * @Assert\Date()
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"read", "write"})
      */
     private $birthday;
