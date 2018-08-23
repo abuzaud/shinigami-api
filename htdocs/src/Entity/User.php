@@ -60,7 +60,7 @@ abstract class User implements UserInterface
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=128)
-     * @Groups({"write"})*
+     * @Groups({"write", "read"})
      */
     private $password;
 
